@@ -1,4 +1,5 @@
 import 'package:breastfirst/pages/addbaby_page1.dart';
+import 'package:breastfirst/pages/addbaby_page2.dart';
 import 'package:breastfirst/pages/login-screen.dart';
 import 'package:breastfirst/pages/remindaerpage.dart';
 import 'package:flutter/material.dart';
@@ -64,23 +65,33 @@ class _MyHomePageState extends State<MyHomePage> {
             _activityButton(Icons.bedtime, 'Sleep', Colors.red),
             _activityButton(Icons.baby_changing_station, 'Pumping', Colors.green),
             _activityButton(Icons.add, 'Other activity', Colors.yellow),
-            ElevatedButton(
-              child: Text('Login'),
-              onPressed: () {
-                 Navigator.push(context, MaterialPageRoute(builder: (context) => SignInPage()),);
-              },
-            ),
-            ElevatedButton(
-              child: Text('ReminderPage'),
-              onPressed: () {
-                Navigator.push(context, MaterialPageRoute(builder: (context) => ReminderPage()),);
-              },
-            ),
-            ElevatedButton(
-              child: Text('Add_Baby_Page1'),
-              onPressed: () {
-                Navigator.push(context, MaterialPageRoute(builder: (context) => AddBabyPage()),);
-              },
+            Wrap(
+              children: [
+                ElevatedButton(
+                  child: Text('Login'),
+                  onPressed: () {
+                    Navigator.push(context, MaterialPageRoute(builder: (context) => SignInPage()),);
+                  },
+                ),
+                ElevatedButton(
+                  child: Text('Reminder'),
+                  onPressed: () {
+                    Navigator.push(context, MaterialPageRoute(builder: (context) => ReminderPage()),);
+                  },
+                ),
+                ElevatedButton(
+                  child: Text('Add_Baby1'),
+                  onPressed: () {
+                    Navigator.push(context, MaterialPageRoute(builder: (context) => AddBabyPage()),);
+                  },
+                ),
+                ElevatedButton(
+                  child: Text('Add_Baby2'),
+                  onPressed: () {
+                    Navigator.push(context, MaterialPageRoute(builder: (context) => AddBabyDetailsPage()),);
+                  },
+                ),
+              ],
             ),
           ],
         ),
