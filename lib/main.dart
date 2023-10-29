@@ -1,7 +1,12 @@
 import 'package:breastfirst/pages/addbaby_page1.dart';
 import 'package:breastfirst/pages/addbaby_page2.dart';
+import 'package:breastfirst/pages/addbaby_page3.dart';
+import 'package:breastfirst/pages/congratpage.dart';
 import 'package:breastfirst/pages/login-screen.dart';
+import 'package:breastfirst/pages/lullabypage.dart';
 import 'package:breastfirst/pages/remindaerpage.dart';
+import 'package:breastfirst/pages/trackbaby.dart';
+import 'package:breastfirst/pages/welcomepage.dart';
 import 'package:flutter/material.dart';
 
 void main() {
@@ -89,6 +94,36 @@ class _MyHomePageState extends State<MyHomePage> {
                   child: Text('Add_Baby2'),
                   onPressed: () {
                     Navigator.push(context, MaterialPageRoute(builder: (context) => AddBabyDetailsPage()),);
+                  },
+                ),
+                ElevatedButton(
+                  child: Text('Add_Baby3'),
+                  onPressed: () {
+                    Navigator.push(context, MaterialPageRoute(builder: (context) => AddBabyPage3()),);
+                  },
+                ),
+                ElevatedButton(
+                  child: Text('welcome'),
+                  onPressed: () {
+                    Navigator.push(context, MaterialPageRoute(builder: (context) => WelcomePage()),);
+                  },
+                ),
+                ElevatedButton(
+                  child: Text('tracker'),
+                  onPressed: () {
+                    Navigator.push(context, MaterialPageRoute(builder: (context) => FeedingsTracker()),);
+                  },
+                ),
+                ElevatedButton(
+                  child: Text('lullaby'),
+                  onPressed: () {
+                    Navigator.push(context, MaterialPageRoute(builder: (context) => LullabiesScreen()),);
+                  },
+                ),
+                ElevatedButton(
+                  child: Text('congrat'),
+                  onPressed: () {
+                    Navigator.push(context, MaterialPageRoute(builder: (context) => CongratulationsScreen()),);
                   },
                 ),
               ],
