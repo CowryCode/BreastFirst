@@ -1,3 +1,4 @@
+import 'package:breastfirst/pages/addbaby_page2.dart';
 import 'package:flutter/material.dart';
 
 class RegistrationScreen extends StatefulWidget {
@@ -112,6 +113,7 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
             ElevatedButton(
               onPressed: () {
                 // Handle registration logic here
+                Navigator.push(context, MaterialPageRoute(builder: (context) => AddBabyDetailsPage()),);
               },
               child: Text("CREATE ACCOUNT"),
             ),

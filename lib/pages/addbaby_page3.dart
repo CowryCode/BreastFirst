@@ -1,3 +1,4 @@
+import 'package:breastfirst/main.dart';
 import 'package:flutter/material.dart';
 
 class AddBabyPage3 extends StatefulWidget {
@@ -40,6 +41,7 @@ class _AddBabyPage3State extends State<AddBabyPage3> {
             SizedBox(height: 30),
             ElevatedButton(
               onPressed: () {
+                Navigator.push(context, MaterialPageRoute(builder: (context) => MyHomePage()),);
                 // handle button press
               },
               child: Text('Continue'),

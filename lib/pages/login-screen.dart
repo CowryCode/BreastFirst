@@ -1,4 +1,5 @@
 
+import 'package:breastfirst/pages/signup.dart';
 import 'package:flutter/material.dart';
 
 class SignInPage extends StatefulWidget {
@@ -90,6 +91,7 @@ class _SignInPageState extends State<SignInPage> {
                 TextButton(
                   onPressed: () {
                     // Navigate to sign up page
+                    Navigator.push(context, MaterialPageRoute(builder: (context) => RegistrationScreen()),);
                   },
                   child: Text('Sign up', style: TextStyle(color: Colors.purple)),
                 ),
