@@ -1,3 +1,5 @@
+import 'package:breastfirst/pages/babyroom.dart';
+import 'package:breastfirst/pages/store.dart';
 import 'package:flutter/material.dart';
 
 class AchievementsScreen extends StatefulWidget {
@@ -29,6 +31,23 @@ class _AchievementsScreenState extends State<AchievementsScreen> {
             achievementItem('Pumping', '< 5 times per day', 4, 90),
             achievementItem('Diaper', '8 times per day', 2, 16),
             achievementItem('Sleep', '< 15 hours per day', 15, 100),
+            SizedBox(height : 30),
+            Wrap(
+              children: [
+                ElevatedButton(
+                  child: Text('store'),
+                  onPressed: () {
+                    Navigator.push(context, MaterialPageRoute(builder: (context) => StoreScreen()),);
+                  },
+                ),
+                ElevatedButton(
+                  child: Text('babyroom'),
+                  onPressed: () {
+                    Navigator.push(context, MaterialPageRoute(builder: (context) => BabysRoomScreen()),);
+                  },
+                ),
+              ],
+            ),
           ],
         ),
       ),

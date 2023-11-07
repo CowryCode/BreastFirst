@@ -1,3 +1,4 @@
+import 'package:breastfirst/pages/store.dart';
 import 'package:flutter/material.dart';
 
 class BabysRoomScreen extends StatefulWidget {
@@ -11,14 +12,16 @@ class _BabysRoomScreenState extends State<BabysRoomScreen> {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.purple[300],
-        title: Text("Baby's name room"),
+        title: Text("Baby's room"),
         actions: [
-          IconButton(
-            icon: Icon(Icons.more_vert),
-            onPressed: () {
-              // Handle the menu button press
-            },
-          ),
+          achievementItem('Pts ', '', 5, 80),
+          // IconButton(
+          //   icon: Icon(Icons.local_mall),
+          //   onPressed: () {
+          //     Navigator.push(context, MaterialPageRoute(builder: (context) => StoreScreen()),);
+          //     // Handle the menu button press
+          //   },
+          // ),
         ],
         leading: Icon(Icons.star, color: Colors.yellow),
       ),
@@ -44,6 +47,29 @@ class _BabysRoomScreenState extends State<BabysRoomScreen> {
           BottomNavigationBarItem(icon: Icon(Icons.store), label: 'Store'),
           BottomNavigationBarItem(icon: Icon(Icons.wind_power), label: 'Achievements'),
           BottomNavigationBarItem(icon: Icon(Icons.settings), label: 'Settings'),
+        ],
+      ),
+    );
+  }
+
+  Widget achievementItem(String title, String target, int score, double progress) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: 10.0),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          Text(title),
+          Text(target),
+          Text('$score'),
+          Container(
+            width: 100,
+            child: LinearProgressIndicator(
+              value: progress / 100,
+              backgroundColor: Colors.purple[300],
+              valueColor: AlwaysStoppedAnimation<Color>(Colors.grey[300]!),
+            ),
+          ),
+          Text('$progress')
         ],
       ),
     );

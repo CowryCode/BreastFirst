@@ -74,139 +74,145 @@ class _MyHomePageState extends State<MyHomePage> {
               _activityButton(Icons.score, 'Achievements', Colors.green, actionChoice: 0),
               _activityButton(Icons.feed, 'Feeding', Colors.orange, actionChoice: 1),
               _activityButton(Icons.child_care, 'Diaper change', Colors.blue, actionChoice: 2),
-              _activityButton(Icons.bedtime, 'Sleep', Colors.red, actionChoice: 3),
+              //_activityButton(Icons.bedtime, 'Sleep', Colors.red, actionChoice: 3),
               _activityButton(Icons.baby_changing_station, 'Pumping', Colors.pink, actionChoice: 4),
              // _activityButton(Icons.add, 'Other activity', Colors.yellow, actionChoice: 5),
-              Wrap(
-                children: [
-                  ElevatedButton(
-                    child: Text('Login'),
-                    onPressed: () {
-                      Navigator.push(context, MaterialPageRoute(builder: (context) => SignInPage()),);
-                    },
-                  ),
-                  ElevatedButton(
-                    child: Text('Reminder'),
-                    onPressed: () {
-                      Navigator.push(context, MaterialPageRoute(builder: (context) => ReminderPage()),);
-                    },
-                  ),
-                  ElevatedButton(
-                    child: Text('Add_Baby1'),
-                    onPressed: () {
-                      Navigator.push(context, MaterialPageRoute(builder: (context) => AddBabyPage()),);
-                    },
-                  ),
-                  ElevatedButton(
-                    child: Text('Add_Baby2'),
-                    onPressed: () {
-                      Navigator.push(context, MaterialPageRoute(builder: (context) => AddBabyDetailsPage()),);
-                    },
-                  ),
-                  ElevatedButton(
-                    child: Text('Add_Baby3'),
-                    onPressed: () {
-                      Navigator.push(context, MaterialPageRoute(builder: (context) => AddBabyPage3()),);
-                    },
-                  ),
-                  ElevatedButton(
-                    child: Text('welcome'),
-                    onPressed: () {
-                      Navigator.push(context, MaterialPageRoute(builder: (context) => WelcomePage()),);
-                    },
-                  ),
-                  ElevatedButton(
-                    child: Text('tracker'),
-                    onPressed: () {
-                      Navigator.push(context, MaterialPageRoute(builder: (context) => FeedingsTracker()),);
-                    },
-                  ),
-                  ElevatedButton(
-                    child: Text('lullaby'),
-                    onPressed: () {
-                      Navigator.push(context, MaterialPageRoute(builder: (context) => LullabiesScreen()),);
-                    },
-                  ),
-                  ElevatedButton(
-                    child: Text('congrat'),
-                    onPressed: () {
-                      Navigator.push(context, MaterialPageRoute(builder: (context) => CongratulationsScreen()),);
-                    },
-                  ),
-                  ElevatedButton(
-                    child: Text('selection'),
-                    onPressed: () {
-                      Navigator.push(context, MaterialPageRoute(builder: (context) => SelectionScreen()),);
-                    },
-                  ),
-                  ElevatedButton(
-                    child: Text('appreciate'),
-                    onPressed: () {
-                      Navigator.push(context, MaterialPageRoute(builder: (context) => AppreciationScreen()),);
-                    },
-                  ),
-                  ElevatedButton(
-                    child: Text('pumping'),
-                    onPressed: () {
-                      Navigator.push(context, MaterialPageRoute(builder: (context) => PumpingScreen()),);
-                    },
-                  ),
-                  ElevatedButton(
-                    child: Text('pumpingreport'),
-                    onPressed: () {
-                      Navigator.push(context, MaterialPageRoute(builder: (context) => PumpingReportsScreen()),);
-                    },
-                  ),
-                  ElevatedButton(
-                    child: Text('store'),
-                    onPressed: () {
-                      Navigator.push(context, MaterialPageRoute(builder: (context) => StoreScreen()),);
-                    },
-                  ),
-                  ElevatedButton(
-                    child: Text('achievement'),
-                    onPressed: () {
-                      Navigator.push(context, MaterialPageRoute(builder: (context) => AchievementsScreen()),);
-                    },
-                  ),
-                  ElevatedButton(
-                    child: Text('babyroom'),
-                    onPressed: () {
-                      Navigator.push(context, MaterialPageRoute(builder: (context) => BabysRoomScreen()),);
-                    },
-                  ),
-                  ElevatedButton(
-                    child: Text('stat'),
-                    onPressed: () {
-                      Navigator.push(context, MaterialPageRoute(builder: (context) => BreastfeedingStatsScreen()),);
-                    },
-                  ),
-                  ElevatedButton(
-                    child: Text('moodcheck'),
-                    onPressed: () {
-                      Navigator.push(context, MaterialPageRoute(builder: (context) => MoodCheckScreen()),);
-                    },
-                  ),
-                  ElevatedButton(
-                    child: Text('setting'),
-                    onPressed: () {
-                      Navigator.push(context, MaterialPageRoute(builder: (context) => SettingsScreen()),);
-                    },
-                  ),
-                  ElevatedButton(
-                    child: Text('invitation'),
-                    onPressed: () {
-                      Navigator.push(context, MaterialPageRoute(builder: (context) => InvitationScreen()),);
-                    },
-                  ),
-                  ElevatedButton(
-                    child: Text('signup'),
-                    onPressed: () {
-                      Navigator.push(context, MaterialPageRoute(builder: (context) => RegistrationScreen()),);
-                    },
-                  ),
-                ],
+
+              SizedBox(height: 30,),
+              Image.asset(  //
+                'images/baby.webp',
+                height: 250, // adjust this to your preference
               ),
+              // Wrap(
+              //   children: [
+              //     ElevatedButton(
+              //       child: Text('Login'),
+              //       onPressed: () {
+              //         Navigator.push(context, MaterialPageRoute(builder: (context) => SignInPage()),);
+              //       },
+              //     ),
+              //     ElevatedButton(
+              //       child: Text('Reminder'),
+              //       onPressed: () {
+              //         Navigator.push(context, MaterialPageRoute(builder: (context) => ReminderPage()),);
+              //       },
+              //     ),
+              //     ElevatedButton(
+              //       child: Text('Add_Baby1'),
+              //       onPressed: () {
+              //         Navigator.push(context, MaterialPageRoute(builder: (context) => AddBabyPage()),);
+              //       },
+              //     ),
+              //     ElevatedButton(
+              //       child: Text('Add_Baby2'),
+              //       onPressed: () {
+              //         Navigator.push(context, MaterialPageRoute(builder: (context) => AddBabyDetailsPage()),);
+              //       },
+              //     ),
+              //     ElevatedButton(
+              //       child: Text('Add_Baby3'),
+              //       onPressed: () {
+              //         Navigator.push(context, MaterialPageRoute(builder: (context) => AddBabyPage3()),);
+              //       },
+              //     ),
+              //     ElevatedButton(
+              //       child: Text('welcome'),
+              //       onPressed: () {
+              //         Navigator.push(context, MaterialPageRoute(builder: (context) => WelcomePage()),);
+              //       },
+              //     ),
+              //     ElevatedButton(
+              //       child: Text('tracker'),
+              //       onPressed: () {
+              //         Navigator.push(context, MaterialPageRoute(builder: (context) => FeedingsTracker()),);
+              //       },
+              //     ),
+              //     ElevatedButton(
+              //       child: Text('lullaby'),
+              //       onPressed: () {
+              //         Navigator.push(context, MaterialPageRoute(builder: (context) => LullabiesScreen()),);
+              //       },
+              //     ),
+              //     ElevatedButton(
+              //       child: Text('congrat'),
+              //       onPressed: () {
+              //         Navigator.push(context, MaterialPageRoute(builder: (context) => CongratulationsScreen()),);
+              //       },
+              //     ),
+              //     ElevatedButton(
+              //       child: Text('selection'),
+              //       onPressed: () {
+              //         Navigator.push(context, MaterialPageRoute(builder: (context) => SelectionScreen()),);
+              //       },
+              //     ),
+              //     ElevatedButton(
+              //       child: Text('appreciate'),
+              //       onPressed: () {
+              //         Navigator.push(context, MaterialPageRoute(builder: (context) => AppreciationScreen()),);
+              //       },
+              //     ),
+              //     ElevatedButton(
+              //       child: Text('pumping'),
+              //       onPressed: () {
+              //         Navigator.push(context, MaterialPageRoute(builder: (context) => PumpingScreen()),);
+              //       },
+              //     ),
+              //     ElevatedButton(
+              //       child: Text('pumpingreport'),
+              //       onPressed: () {
+              //         Navigator.push(context, MaterialPageRoute(builder: (context) => PumpingReportsScreen()),);
+              //       },
+              //     ),
+              //     ElevatedButton(
+              //       child: Text('store'),
+              //       onPressed: () {
+              //         Navigator.push(context, MaterialPageRoute(builder: (context) => StoreScreen()),);
+              //       },
+              //     ),
+              //     ElevatedButton(
+              //       child: Text('achievement'),
+              //       onPressed: () {
+              //         Navigator.push(context, MaterialPageRoute(builder: (context) => AchievementsScreen()),);
+              //       },
+              //     ),
+              //     ElevatedButton(
+              //       child: Text('babyroom'),
+              //       onPressed: () {
+              //         Navigator.push(context, MaterialPageRoute(builder: (context) => BabysRoomScreen()),);
+              //       },
+              //     ),
+              //     ElevatedButton(
+              //       child: Text('stat'),
+              //       onPressed: () {
+              //         Navigator.push(context, MaterialPageRoute(builder: (context) => BreastfeedingStatsScreen()),);
+              //       },
+              //     ),
+              //     ElevatedButton(
+              //       child: Text('moodcheck'),
+              //       onPressed: () {
+              //         Navigator.push(context, MaterialPageRoute(builder: (context) => MoodCheckScreen()),);
+              //       },
+              //     ),
+              //     ElevatedButton(
+              //       child: Text('setting'),
+              //       onPressed: () {
+              //         Navigator.push(context, MaterialPageRoute(builder: (context) => SettingsScreen()),);
+              //       },
+              //     ),
+              //     ElevatedButton(
+              //       child: Text('invitation'),
+              //       onPressed: () {
+              //         Navigator.push(context, MaterialPageRoute(builder: (context) => InvitationScreen()),);
+              //       },
+              //     ),
+              //     ElevatedButton(
+              //       child: Text('signup'),
+              //       onPressed: () {
+              //         Navigator.push(context, MaterialPageRoute(builder: (context) => RegistrationScreen()),);
+              //       },
+              //     ),
+              //   ],
+              // ),
             ],
           ),
         ),

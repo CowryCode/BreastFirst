@@ -1,3 +1,4 @@
+import 'package:breastfirst/pages/pumpingreport.dart';
 import 'package:flutter/material.dart';
 
 class PumpingScreen extends StatefulWidget {
@@ -20,7 +21,9 @@ class _PumpingScreenState extends State<PumpingScreen> {
               // Handle the menu button press
             },
           ),
-          TextButton(onPressed: () {}, child: Text('Done'))
+          TextButton(onPressed: () {
+            Navigator.push(context, MaterialPageRoute(builder: (context) => PumpingReportsScreen()),);
+          }, child: Text('History'))
         ],
       ),
       body: Padding(

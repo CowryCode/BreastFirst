@@ -19,12 +19,13 @@ class _StoreScreenState extends State<StoreScreen> {
         ),
         title: Text('Store'),
         actions: [
-          IconButton(
-            icon: Icon(Icons.more_vert),
-            onPressed: () {
-              // Handle the menu button press
-            },
-          ),
+          achievementItem('Pts ', '', 5, 80),
+          // IconButton(
+          //   icon: Icon(Icons.more_vert),
+          //   onPressed: () {
+          //     // Handle the menu button press
+          //   },
+          // ),
         ],
       ),
       body: Padding(
@@ -65,6 +66,29 @@ class _StoreScreenState extends State<StoreScreen> {
         SizedBox(height: 10),
         Text(title),
       ],
+    );
+  }
+
+  Widget achievementItem(String title, String target, int score, double progress) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: 10.0),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          Text(title),
+          Text(target),
+          Text('$score'),
+          Container(
+            width: 100,
+            child: LinearProgressIndicator(
+              value: progress / 100,
+              backgroundColor: Colors.purple[300],
+              valueColor: AlwaysStoppedAnimation<Color>(Colors.grey[300]!),
+            ),
+          ),
+          Text('$progress')
+        ],
+      ),
     );
   }
 }

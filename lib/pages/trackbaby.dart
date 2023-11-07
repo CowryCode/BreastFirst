@@ -1,3 +1,6 @@
+import 'package:breastfirst/pages/lullabypage.dart';
+import 'package:breastfirst/pages/pumping.dart';
+import 'package:breastfirst/pages/pumpingreport.dart';
 import 'package:flutter/material.dart';
 
 class FeedingsTracker extends StatefulWidget {
@@ -32,8 +35,12 @@ class _FeedingsTrackerState extends State<FeedingsTracker> {
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
                   TextButton(onPressed: () {}, child: Text('Breastfeeding')),
-                  TextButton(onPressed: () {}, child: Text('Bottle')),
-                  TextButton(onPressed: () {}, child: Text('Pumping')),
+                  TextButton(onPressed: () {
+                    Navigator.push(context, MaterialPageRoute(builder: (context) => PumpingScreen()),);
+                  }, child: Text('Bottle')),
+                  TextButton(onPressed: () {
+                    Navigator.push(context, MaterialPageRoute(builder: (context) => PumpingScreen()),);
+                  }, child: Text('Pumping')),
                 ],
               ),
             ),
@@ -42,7 +49,12 @@ class _FeedingsTrackerState extends State<FeedingsTracker> {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Text('Monday 20th March 2023\n16:41'),
-                ElevatedButton(onPressed: () {}, child: Text('History'))
+                ElevatedButton(onPressed: () {
+                  Navigator.push(context, MaterialPageRoute(builder: (context) => PumpingReportsScreen()),);
+                }, child: Text('History')),
+                ElevatedButton(onPressed: () {
+                  Navigator.push(context, MaterialPageRoute(builder: (context) => LullabiesScreen()),);
+                }, child: Text('Lullaby'))
               ],
             ),
             SizedBox(height: 30),
