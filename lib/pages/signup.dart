@@ -1,4 +1,5 @@
 import 'package:breastfirst/pages/addbaby_page2.dart';
+import 'package:breastfirst/pages/welcomepage.dart';
 import 'package:flutter/material.dart';
 
 class RegistrationScreen extends StatefulWidget {
@@ -70,12 +71,14 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                   child: ListTile(
                     title: const Text('Pregnant'),
                     leading: Radio<String>(
-                      value: 'Pregnant',
+                      //value: 'Pregnant',
+                      value: '0',
                       groupValue: _selectedStatus,
                       onChanged: (value) {
                         setState(() {
                           _selectedStatus = value;
                         });
+                        print('PREGNANT-VALUE IS : $value');
                       },
                     ),
                   ),
@@ -84,11 +87,13 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                   child: ListTile(
                     title: const Text('Breastfeeding'),
                     leading: Radio<String>(
-                      value: 'Breastfeeding',
+                     // value: 'Breastfeeding',
+                      value: '1',
                       groupValue: _selectedStatus,
                       onChanged: (value) {
                         setState(() {
                           _selectedStatus = value;
+                          print('BREAST-FEEDING VALUE IS : $value');
                         });
                       },
                     ),
@@ -113,7 +118,12 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
             ElevatedButton(
               onPressed: () {
                 // Handle registration logic here
-                Navigator.push(context, MaterialPageRoute(builder: (context) => AddBabyDetailsPage()),);
+                //String sel = (_selectedStatus == '0') ? "Pregnant Selected" : "Breastfeading selected" ;
+                if(_selectedStatus == '0'){
+                  Navigator.push(context, MaterialPageRoute(builder: (context) => WelcomePage()),);
+                }else{
+                  Navigator.push(context, MaterialPageRoute(builder: (context) => AddBabyDetailsPage()),);
+                }
               },
               child: Text("CREATE ACCOUNT"),
             ),

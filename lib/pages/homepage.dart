@@ -76,7 +76,7 @@ class _MyHomePageState extends State<MyHomePage> {
               _activityButton(Icons.child_care, 'Diaper change', Colors.blue, actionChoice: 2),
               _activityButton(Icons.bedtime, 'Sleep', Colors.red, actionChoice: 3),
               _activityButton(Icons.baby_changing_station, 'Pumping', Colors.pink, actionChoice: 4),
-              _activityButton(Icons.add, 'Other activity', Colors.yellow, actionChoice: 5),
+             // _activityButton(Icons.add, 'Other activity', Colors.yellow, actionChoice: 5),
               Wrap(
                 children: [
                   ElevatedButton(
