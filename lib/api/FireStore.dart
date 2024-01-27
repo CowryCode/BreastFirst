@@ -2,6 +2,7 @@
 import 'dart:async';
 import 'dart:io';
 
+import 'package:breastfirst/api/model/babydata.dart';
 import 'package:breastfirst/api/model/motherdata.dart';
 import 'package:breastfirst/statemanagement/valuenotifiers/NotifierCentral.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -12,10 +13,7 @@ class FireStoreConnect{
 
   CollectionReference users = FirebaseFirestore.instance.collection('users');
   CollectionReference motherCollection = FirebaseFirestore.instance.collection('MotherCollection');
-  CollectionReference doctorAppointmentCollection = FirebaseFirestore.instance.collection('ProvidersAppointments');
-  CollectionReference providerLicencesCollection = FirebaseFirestore.instance.collection('ProvidersLicences');
-  CollectionReference profilePictureCollection = FirebaseFirestore.instance.collection('ProfilePictures');
-  CollectionReference medicalReportsCollection = FirebaseFirestore.instance.collection('MedicalReports');
+  CollectionReference babyCollection = FirebaseFirestore.instance.collection('BabyCollection');
 
  Future<void>? saveMotherData({required Motherdata motherdata}) async{
     Map<String, dynamic> data = {
@@ -40,6 +38,23 @@ class FireStoreConnect{
       }catch(e){
         print('Update failed with error : ${e.toString()}');
       }
+  }
+
+  Future<void>? saveBabyData({required BabyData babydata}) async{
+    Map<String, dynamic> data = {
+      'gender': babydata.gender,
+      'babyname': babydata.babyname,
+      'motherIdentifier': motherDataNotifier.value.email,
+      'birthDate': babydata.birthDate,
+      'birthTime': babydata.birthTime,
+      'babyHeight': babydata.babyHeight,
+      'babyWeight': babydata.babyWeight,
+      'timestamp': DateTime.now()
+    };
+
+    DocumentReference babyData = babyCollection.doc("${motherDataNotifier.value.email}");
+    await babyData.set(data);
+    babyDataNotifier.updateBabyDataNotifier(babydata: babydata);
   }
 
   // Future<void>? startCalendarMeeting({required CalendarModel calendarModel,  String? calltoken}) async{
