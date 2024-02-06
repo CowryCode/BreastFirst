@@ -1,6 +1,8 @@
 
 import 'package:breastfirst/api/FireStoreAuthentication.dart';
+import 'package:breastfirst/pages/homepage.dart';
 import 'package:breastfirst/pages/signup.dart';
+import 'package:breastfirst/pages/welcomepage.dart';
 import 'package:flutter/material.dart';
 
 class SignInPage extends StatefulWidget {
@@ -67,7 +69,7 @@ class _SignInPageState extends State<SignInPage> {
               onPressed: () {
                 _loginAction().then((value) => {
                   if(value == true){
-                    print('Login ok')
+                  Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => MyHomePage()),)
                   }else{
                     _showSnackBar(context)
                   }

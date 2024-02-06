@@ -1,3 +1,4 @@
+import 'package:breastfirst/pages/components/countdownwidget.dart';
 import 'package:breastfirst/pages/lullabypage.dart';
 import 'package:breastfirst/pages/pumping.dart';
 import 'package:breastfirst/pages/pumpingreport.dart';
@@ -97,6 +98,7 @@ class _FeedingsTrackerState extends State<FeedingsTracker> {
               },
               child: Text('Done'),
             ),
+            CountDownWidget(),
             Spacer(),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
