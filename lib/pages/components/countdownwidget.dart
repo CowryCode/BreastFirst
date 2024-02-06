@@ -3,7 +3,10 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 
 class CountDownWidget extends StatefulWidget {
-  const CountDownWidget({Key? key}) : super(key: key);
+  final bool breastFeeding;
+  final bool bottle;
+  final bool pumping;
+  const CountDownWidget({Key? key, this.breastFeeding = true, this.bottle = false, this.pumping = false}) : super(key: key);
 
   @override
   _CountDownWidgetState createState() => _CountDownWidgetState();
@@ -17,50 +20,150 @@ class _CountDownWidgetState extends State<CountDownWidget> {
   Duration elapsedDuration = Duration();
   late Timer _timer;
 
+  int minutes = 0;
+  int seconds = 0;
+
   @override
   Widget build(BuildContext context) {
     return _countdowntimer();
   }
 
   Widget _countdowntimer(){
+    var msg =  (widget.breastFeeding == true) ?
+    'Click on the breast side your are using now!'
+        :
+    (widget.pumping == true)?
+        'Start pumping' : 'Start Bottling';
     return Column(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
-        Text(
-          'Count: $count seconds',
-          style: TextStyle(fontSize: 20),
+          Center(
+          child: Text(
+            msg,
+            style: TextStyle(fontSize: 20),
+            textAlign: TextAlign.center,
+          ),
         ),
         SizedBox(height: 20),
+
+        Container(
+          height: 150,
+          width: 150,
+          decoration: BoxDecoration(
+            shape: BoxShape.circle,
+            //color: Colors.white,
+            color: Colors.purple[200],
+          ),
+          child: Center(
+            child: Text(
+              '$minutes:$seconds',
+              style: TextStyle(
+                fontSize: 50,
+                fontWeight: FontWeight.bold,
+                color: Colors.white
+              ),
+            ),
+          ),
+        ),
+        // Text(
+        //   '$minutes:$seconds',
+        //   style: TextStyle(fontSize: 50),
+        // ),
         Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
+            if(widget.breastFeeding == true)
             ElevatedButton(
               onPressed: () {
                 selectedBreast(isLeft: true);
-                //startCountdown();
+                // startCountdown();
               },
-              child: Text(
-                  (leftBreastActive == false) ? 'Left' : 'Stop'
+              child: Row(
+                children: [
+                  Text((leftBreastActive == false) ? 'Left' : 'Stop'),
+                  Icon((leftBreastActive == false)? Icons.play_arrow : Icons.pause, size: 20)
+                ],
+
               ),
             ),
-            SizedBox(width: 20),
+            if(widget.breastFeeding == true)
+            SizedBox(width: 50),
+
+           if(widget.breastFeeding == false && widget.bottle == true)
+             ElevatedButton(
+              onPressed: () {
+                if(isCounting == false){
+                  startCountdown();
+                }else{
+                  print('BOTTLE DURATION : ${elapsedDuration.inSeconds}');
+                  startCountdown();
+                }
+              },
+              child: Row(
+                children: [
+                  Text((isCounting == false) ? 'Start Feeding' : 'Pause Feeding'),
+                  Icon((isCounting == false)? Icons.play_arrow : Icons.pause, size: 20)
+                ],
+
+              ),
+            ),
+            if(widget.breastFeeding == false && widget.pumping == true)
+              ElevatedButton(
+                onPressed: () {
+                  if(isCounting == false){
+                    startCountdown();
+                  }else{
+                    print('PUMPING DURATION : ${elapsedDuration.inSeconds}');
+                    startCountdown();
+                  }
+                },
+                child: Row(
+                  children: [
+                    Text((isCounting == false) ? 'Start Pumping' : 'Pause Pumping'),
+                    Icon((isCounting == false)? Icons.play_arrow : Icons.pause, size: 20)
+                  ],
+
+                ),
+              ),
+            if(widget.breastFeeding == true)
             ElevatedButton(
               onPressed: () {
                 selectedBreast(isLeft: false);
-               // startCountdown();
+                // startCountdown();
               },
-              child: Text(
-                  (rightBreastActive == false)?  'Right' : 'Stop'
+              child: Row(
+                children: [
+                  Text((rightBreastActive == false)?  'Right' : 'Stop'),
+                  Icon((rightBreastActive == false)? Icons.play_arrow : Icons.pause, size: 20)
+                ],
+
               ),
             ),
           ],
         ),
         SizedBox(height: 20),
-        if (elapsedDuration.inSeconds > 0)
-          Text(
-            'Elapsed Duration: ${elapsedDuration.inSeconds} seconds',
-            style: TextStyle(fontSize: 18),
-          ),
+        if(isCounting == true)
+        ElevatedButton(
+          onPressed: () {
+            if(widget.pumping == true ) {
+              _showDigitInputDialog(context);
+            }else {
+              // Handle done action
+              if(leftBreastActive == true){
+                // Save this data for left Breast
+                print('LEFT BREAST DURATION : ${elapsedDuration.inSeconds}');
+              }else{
+                // Save this data for right Breast
+                print('Right BREAST DURATION : ${elapsedDuration.inSeconds}');
+              }
+            }
+
+            initializeCounter(lbActive: false, rbActive: false, doneButton: true);
+            stopCountdown();
+          },
+          child: Text('Done'),
+        ),
+        SizedBox(height: 50),
       ],
     );
   }
@@ -80,13 +183,7 @@ class _CountDownWidgetState extends State<CountDownWidget> {
         // STOP THE COUNT
         stopCountdown();
         // RE-INITIALIZE THE COUNTER and Active breasts
-        setState(() {
-          count = 0;
-          elapsedDuration = Duration(seconds: 0);
-          leftBreastActive = false;
-          rightBreastActive = false;
-          isCounting = false;
-        });
+        initializeCounter(lbActive: false, rbActive: false);
       }else if (rightBreastActive == true){
         print('****************************************');
         print('CONDITION 2');
@@ -95,21 +192,10 @@ class _CountDownWidgetState extends State<CountDownWidget> {
 
         stopCountdown();
         // RE-INITIALIZE THE COUNTER and Active breasts
-        setState(() {
-          count = 0;
-          elapsedDuration = Duration(seconds: 0);
-          leftBreastActive = true;
-          rightBreastActive = false;
-          isCounting = false;
-        });
+        initializeCounter(lbActive: true, rbActive: false);
         startCountdown();
       }else{
-        setState(() {
-          count = 0;
-          elapsedDuration = Duration(seconds: 0);
-          leftBreastActive = true;
-          isCounting = false;
-        });
+        initializeCounter(lbActive: true, rbActive: false);
         startCountdown();
       }
 
@@ -124,13 +210,7 @@ class _CountDownWidgetState extends State<CountDownWidget> {
         // STOP THE COUNT
         stopCountdown();
         // RE-INITIALIZE THE COUNTER and Active breasts
-        setState(() {
-          count = 0;
-          elapsedDuration = Duration(seconds: 0);
-          leftBreastActive = false;
-          rightBreastActive = false;
-          isCounting = false;
-        });
+        initializeCounter(lbActive: false, rbActive: false);
       }else if (leftBreastActive == true){
         print('****************************************');
         print('CONDITION 4');
@@ -139,44 +219,39 @@ class _CountDownWidgetState extends State<CountDownWidget> {
 
         stopCountdown();
         // RE-INITIALIZE THE COUNTER and Active breasts
-        setState(() {
-          count = 0;
-          elapsedDuration = Duration(seconds: 0);
-          leftBreastActive = false;
-          rightBreastActive = true;
-          isCounting = false;
-        });
+        initializeCounter(lbActive: false, rbActive: true);
         startCountdown();
       }else {
-        setState(() {
-          count = 0;
-          elapsedDuration = Duration(seconds: 0);
-          rightBreastActive = true;
-          isCounting = false;
-        });
+        initializeCounter(lbActive: false, rbActive: true);
         startCountdown();
       }
     }
 
   }
 
+  void initializeCounter({required bool lbActive, required bool rbActive, bool doneButton = false}){
+    setState(() {
+      count = 0;
+      elapsedDuration = Duration(seconds: 0);
+      rightBreastActive = rbActive;
+      leftBreastActive = lbActive;
+      isCounting = doneButton;
+      minutes = 0;
+      seconds = 0;
+    });
+  }
+
   void startCountdown() {
-    // if (!isCounting) {
-    //   Timer.periodic(Duration(seconds: 1), (timer) {
-    //     setState(() {
-    //       count++;
-    //       elapsedDuration = Duration(seconds: count);
-    //     });
-    //   });
-    //   setState(() {
-    //     isCounting = true;
-    //   });
-    // }
     if (!isCounting) {
       _timer = Timer.periodic(Duration(seconds: 1), (timer) {
         setState(() {
           count++;
+          seconds++;
           elapsedDuration = Duration(seconds: count);
+          if(seconds == 60){
+            minutes++;
+            seconds = 0;
+          }
         });
       });
       setState(() {
@@ -197,19 +272,43 @@ class _CountDownWidgetState extends State<CountDownWidget> {
     }
   }
 
-  // void _startTimer() {
-  //   Timer.periodic(Duration(seconds: 1), (timer) {
-  //    // if (_countdown > 0 && _isCountingDown) {
-  //     if (_countdown == 0 && _isCountingDown) {
-  //       setState(() {
-  //         _countdown++;
-  //       });
-  //     } else {
-  //       timer.cancel();
-  //       stopCountdown();
-  //     }
-  //   });
-  // }
+  Future<void> _showDigitInputDialog(BuildContext context) async {
+    String inputValue = '';
+
+    return showDialog<void>(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text('Enter quantity (ml)'),
+          content: TextField(
+            keyboardType: TextInputType.number,
+            onChanged: (value) {
+              // Only allow digits
+              if (RegExp(r'^[0-9]+$').hasMatch(value)) {
+                inputValue = value;
+              }
+            },
+          ),
+          actions: <Widget>[
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+              child: Text('Cancel'),
+            ),
+            TextButton(
+              onPressed: () {
+                // Use the inputValue as needed (e.g., save, process, etc.)
+                print('Entered Digits: $inputValue');
+                Navigator.of(context).pop();
+              },
+              child: Text('OK'),
+            ),
+          ],
+        );
+      },
+    );
+  }
 
 }
 
