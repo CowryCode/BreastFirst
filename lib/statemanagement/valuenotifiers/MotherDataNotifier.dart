@@ -8,4 +8,10 @@ class MotherDataNotifier extends ValueNotifier<Motherdata> {
     value = motherdata;
     notifyListeners();
   }
+
+  void updateEmail({required String email}){
+    value.setEmail(email: email);
+    notifyListeners();
+  }
+
 }

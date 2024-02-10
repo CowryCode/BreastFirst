@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:breastfirst/api/FireStore.dart';
 import 'package:flutter/material.dart';
 
 class CountDownWidget extends StatefulWidget {
@@ -146,18 +147,19 @@ class _CountDownWidgetState extends State<CountDownWidget> {
         ElevatedButton(
           onPressed: () {
             if(widget.pumping == true ) {
-              _showDigitInputDialog(context);
+              _showDigitInputDialog(context, breastFeedingDuration: elapsedDuration.inSeconds);
             }else {
               // Handle done action
               if(leftBreastActive == true){
                 // Save this data for left Breast
                 print('LEFT BREAST DURATION : ${elapsedDuration.inSeconds}');
+                saveBreastMilkData(duration: elapsedDuration.inSeconds, isLeft: true, isPumping: false);
               }else{
                 // Save this data for right Breast
                 print('Right BREAST DURATION : ${elapsedDuration.inSeconds}');
+                saveBreastMilkData(duration: elapsedDuration.inSeconds, isLeft: false, isPumping: false);
               }
             }
-
             initializeCounter(lbActive: false, rbActive: false, doneButton: true);
             stopCountdown();
           },
@@ -175,21 +177,18 @@ class _CountDownWidgetState extends State<CountDownWidget> {
 
     if(isLeft == true){
       if(leftBreastActive == true){
-        print('****************************************');
-        print('CONDITION 1');
         // THIS CONDITION IMPLIES USER CLICK ON STOP IN AN ACTIVE LEFT BREAST
         // RECORD THE TIME
         print('LEFT BREAST DURATION : ${elapsedDuration.inSeconds}');
+        saveBreastMilkData(duration: elapsedDuration.inSeconds, isLeft: true, isPumping: false);
         // STOP THE COUNT
         stopCountdown();
         // RE-INITIALIZE THE COUNTER and Active breasts
         initializeCounter(lbActive: false, rbActive: false);
       }else if (rightBreastActive == true){
-        print('****************************************');
-        print('CONDITION 2');
         // THIS CONDITION IMPLIES USER CLICK ON START IN AN INACTIVE LEFT BREAST
         print('RIGHT BREAST DURATION : ${elapsedDuration.inSeconds}');
-
+        saveBreastMilkData(duration: elapsedDuration.inSeconds, isLeft: false, isPumping: false);
         stopCountdown();
         // RE-INITIALIZE THE COUNTER and Active breasts
         initializeCounter(lbActive: true, rbActive: false);
@@ -202,21 +201,18 @@ class _CountDownWidgetState extends State<CountDownWidget> {
     }else{
 
       if(rightBreastActive == true){
-        print('****************************************');
-        print('CONDITION 3');
         // THIS CONDITION IMPLIES USER CLICK ON STOP IN AN ACTIVE LEFT BREAST
         // RECORD THE TIME
         print('RIGHT BREAST DURATION : ${elapsedDuration.inSeconds}');
+        saveBreastMilkData(duration: elapsedDuration.inSeconds, isLeft: false, isPumping: false);
         // STOP THE COUNT
         stopCountdown();
         // RE-INITIALIZE THE COUNTER and Active breasts
         initializeCounter(lbActive: false, rbActive: false);
       }else if (leftBreastActive == true){
-        print('****************************************');
-        print('CONDITION 4');
         // THIS CONDITION IMPLIES USER CLICK ON START IN AN INACTIVE LEFT BREAST
         print('LEFT BREAST DURATION : ${elapsedDuration.inSeconds}');
-
+        saveBreastMilkData(duration: elapsedDuration.inSeconds, isLeft: true, isPumping: false);
         stopCountdown();
         // RE-INITIALIZE THE COUNTER and Active breasts
         initializeCounter(lbActive: false, rbActive: true);
@@ -227,6 +223,10 @@ class _CountDownWidgetState extends State<CountDownWidget> {
       }
     }
 
+  }
+
+  void saveBreastMilkData({required int duration, bool? isLeft, int? quantity, required bool isPumping}){
+    FireStoreConnect().saveBreastMilkData(duration: duration, isLeft: isLeft, quantity: quantity, isPumping: isPumping);
   }
 
   void initializeCounter({required bool lbActive, required bool rbActive, bool doneButton = false}){
@@ -272,7 +272,7 @@ class _CountDownWidgetState extends State<CountDownWidget> {
     }
   }
 
-  Future<void> _showDigitInputDialog(BuildContext context) async {
+  Future<void> _showDigitInputDialog(BuildContext context, {required int breastFeedingDuration}) async {
     String inputValue = '';
 
     return showDialog<void>(
@@ -300,6 +300,7 @@ class _CountDownWidgetState extends State<CountDownWidget> {
               onPressed: () {
                 // Use the inputValue as needed (e.g., save, process, etc.)
                 print('Entered Digits: $inputValue');
+                saveBreastMilkData(duration: breastFeedingDuration, quantity: int.parse(inputValue), isPumping: true);
                 Navigator.of(context).pop();
               },
               child: Text('OK'),

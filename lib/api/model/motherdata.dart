@@ -1,3 +1,4 @@
+
 class Motherdata{
   String? email;
   String? name;
@@ -10,5 +11,9 @@ class Motherdata{
     this.email = email;
     this.isPregnant = isPregnant;
     this.name = name;
+  }
+
+  void setEmail({required String email}){
+    this.email = email;
   }
 }

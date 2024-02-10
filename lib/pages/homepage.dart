@@ -32,14 +32,6 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  //int _counter = 0;
-
-  // void _incrementCounter() {
-  //   setState(() {
-  //     _counter++;
-  //   });
-  // }
-
   int _selectedIndex = 0;
 
   static List<Widget> _widgetoptions = <Widget>[
@@ -247,7 +239,7 @@ class _MyHomePageState extends State<MyHomePage> {
             print('Sleep clicked');
           case 4:
             print('Pumping clicked');
-            Navigator.push(context, MaterialPageRoute(builder: (context) => PumpingScreen()),);
+            Navigator.push(context, MaterialPageRoute(builder: (context) => PumpingScreen(pumping: true,)),);
           case 5:
             print('Other Activities clicked');
         }

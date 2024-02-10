@@ -14,6 +14,7 @@ class FireStoreConnect{
   CollectionReference users = FirebaseFirestore.instance.collection('users');
   CollectionReference motherCollection = FirebaseFirestore.instance.collection('MotherCollection');
   CollectionReference babyCollection = FirebaseFirestore.instance.collection('BabyCollection');
+  CollectionReference breastFeedingCollection = FirebaseFirestore.instance.collection('BreastFeedingData');
 
  Future<void>? saveMotherData({required Motherdata motherdata}) async{
     Map<String, dynamic> data = {
@@ -55,6 +56,20 @@ class FireStoreConnect{
     DocumentReference babyData = babyCollection.doc("${motherDataNotifier.value.email}");
     await babyData.set(data);
     babyDataNotifier.updateBabyDataNotifier(babydata: babydata);
+  }
+
+  Future<void>? saveBreastMilkData({required int duration, required bool? isLeft, int? quantity, required bool isPumping}) async{
+    Map<String, dynamic> data = {
+      'breastfeedingduration': duration,
+      'breastSide': isPumping == true? '' : (isLeft == true) ? "LeftSide" : "RightSide",
+      'PumpedQuantity_ML': quantity,
+      'timestamp': DateTime.now()
+    };
+
+    String bfeedingCollecton = isPumping == true ? "Pumping" : "BreastFeeding";
+
+   // DocumentReference breastFeedingData = breastFeedingCollection.doc("${motherDataNotifier.value.email}").collection("x").add(data);
+    breastFeedingCollection.doc("${motherDataNotifier.value.email}").collection(bfeedingCollecton).add(data);
   }
 
   // Future<void>? startCalendarMeeting({required CalendarModel calendarModel,  String? calltoken}) async{

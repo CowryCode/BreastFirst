@@ -1,6 +1,7 @@
 
 import 'package:breastfirst/api/FireStore.dart';
 import 'package:breastfirst/api/model/motherdata.dart';
+import 'package:breastfirst/statemanagement/valuenotifiers/NotifierCentral.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
 class FireStoreAuthentication {
@@ -37,6 +38,7 @@ class FireStoreAuthentication {
 
       if(credential.user != null) {
         print('Login was successful . . .');
+        motherDataNotifier.updateEmail(email: email);
       }
       return true;
     } on FirebaseAuthException catch (e) {
