@@ -146,9 +146,13 @@ class _CountDownWidgetState extends State<CountDownWidget> {
         if(isCounting == true)
         ElevatedButton(
           onPressed: () {
+            print('GOT here 1');
             if(widget.pumping == true ) {
               _showDigitInputDialog(context, breastFeedingDuration: elapsedDuration.inSeconds);
-            }else {
+            }else if(widget.bottle == true){
+              print('GOT here 2');
+              saveBreastMilkData(duration: elapsedDuration.inSeconds, isPumping: false, isBottling: true);
+            } else {
               // Handle done action
               if(leftBreastActive == true){
                 // Save this data for left Breast
@@ -225,8 +229,8 @@ class _CountDownWidgetState extends State<CountDownWidget> {
 
   }
 
-  void saveBreastMilkData({required int duration, bool? isLeft, int? quantity, required bool isPumping}){
-    FireStoreConnect().saveBreastMilkData(duration: duration, isLeft: isLeft, quantity: quantity, isPumping: isPumping);
+  void saveBreastMilkData({required int duration, bool? isLeft, int? quantity, required bool isPumping, bool isBottling = false}){
+    FireStoreConnect().saveBreastMilkData(duration: duration, isLeft: isLeft, quantity: quantity, isPumping: isPumping, isBottling : isBottling );
   }
 
   void initializeCounter({required bool lbActive, required bool rbActive, bool doneButton = false}){

@@ -58,15 +58,15 @@ class FireStoreConnect{
     babyDataNotifier.updateBabyDataNotifier(babydata: babydata);
   }
 
-  Future<void>? saveBreastMilkData({required int duration, required bool? isLeft, int? quantity, required bool isPumping}) async{
+  Future<void>? saveBreastMilkData({required int duration, required bool? isLeft, int? quantity, required bool isPumping,  bool isBottling = false}) async{
     Map<String, dynamic> data = {
       'breastfeedingduration': duration,
-      'breastSide': isPumping == true? '' : (isLeft == true) ? "LeftSide" : "RightSide",
+      'breastSide': isPumping == true || isBottling == true ? '' : (isLeft == true) ? "LeftSide" : "RightSide",
       'PumpedQuantity_ML': quantity,
       'timestamp': DateTime.now()
     };
 
-    String bfeedingCollecton = isPumping == true ? "Pumping" : "BreastFeeding";
+    String bfeedingCollecton = isPumping == true ? "Pumping" :  isBottling == true ? "Bottling" : "BreastFeeding";
 
    // DocumentReference breastFeedingData = breastFeedingCollection.doc("${motherDataNotifier.value.email}").collection("x").add(data);
     breastFeedingCollection.doc("${motherDataNotifier.value.email}").collection(bfeedingCollecton).add(data);
