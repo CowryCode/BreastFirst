@@ -22,7 +22,8 @@ class _LullabiesScreenState extends State<LullabiesScreen> {
   void initState() {
     // TODO: implement initState
     super.initState();
-    playBgSound(musicUri: "https://ardanceeappassets.s3.ca-central-1.amazonaws.com/audios/Enjoy-12.mp3");
+    //playBgSound(musicUri: "https://ardanceeappassets.s3.ca-central-1.amazonaws.com/audios/Enjoy-12.mp3");
+    //playBgSound(musicUri: "https://easyfeed.s3.us-east-2.amazonaws.com/Rock_a_bye_Baby.mp3");
   }
 
   @override
@@ -99,15 +100,15 @@ class _LullabiesScreenState extends State<LullabiesScreen> {
                 ],
               ),
             ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              children: [
-                Icon(Icons.home, size: 30),
-                Icon(Icons.library_music, size: 30),
-                Icon(Icons.playlist_play, size: 30),
-                Icon(Icons.search, size: 30),
-              ],
-            )
+            // Row(
+            //   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            //   children: [
+            //    // Icon(Icons.home, size: 30),
+            //     // Icon(Icons.library_music, size: 30),
+            //     // Icon(Icons.playlist_play, size: 30),
+            //     // Icon(Icons.search, size: 30),
+            //   ],
+            // )
           ],
         ),
       ),
@@ -137,13 +138,22 @@ class _LullabiesScreenState extends State<LullabiesScreen> {
       if(isMusicPlaying == true){
         print('got here 1');
         pauseBgSound();
+        setState(() {
+          activeMusicIndex = 0;
+          isMusicPlaying = false;
+        });
       }else{
         print('got here 2');
+        setState(() {
+          activeMusicIndex = musicIndex;
+          isMusicPlaying = true;
+        });
         playPauseBgSound();
       }
     }else{
       print('got here 3');
       String? uri = MusicLibrary().getMusicUri(musicIndex: musicIndex);
+      print('THE MUSIC URL : $uri');
       playBgSound(musicUri: uri!);
       setState(() {
         activeMusicIndex = musicIndex;
@@ -171,9 +181,6 @@ class _LullabiesScreenState extends State<LullabiesScreen> {
   }
 
   playBgSound({required String musicUri}) async {
-    // bool b = await PrefData().getIsSoundOn();
-    // print("playsound===true---$b");
-    // // if (b) {
     try {
       if (assetsAudioPlayer != null &&
           assetsAudioPlayer.isPlaying.value) {
@@ -186,7 +193,7 @@ class _LullabiesScreenState extends State<LullabiesScreen> {
     //assetsAudioPlayer.open(Audio.network(isSkip),
     assetsAudioPlayer.open(Audio.network(musicUri),
         autoStart: b,
-        loopMode: LoopMode.single,
+        loopMode: LoopMode.playlist,
         playInBackground: PlayInBackground.disabledPause,
         audioFocusStrategy: AssetsAudioPlayer.defaultFocusStrategy);
   }
