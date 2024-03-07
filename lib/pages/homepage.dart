@@ -5,6 +5,7 @@ import 'package:breastfirst/pages/addbaby_page3.dart';
 import 'package:breastfirst/pages/appreciation.dart';
 import 'package:breastfirst/pages/babyroom.dart';
 import 'package:breastfirst/pages/breastfeedingstat.dart';
+import 'package:breastfirst/pages/components/performancetable.dart';
 import 'package:breastfirst/pages/congratpage.dart';
 import 'package:breastfirst/pages/invitation.dart';
 import 'package:breastfirst/pages/login-screen.dart';
@@ -84,9 +85,10 @@ class _MyHomePageState extends State<MyHomePage> {
                     },
                   ),
                   ElevatedButton(
-                    child: Text('Reminder'),
+                    child: Text('Reminder-LeaderBoard'),
                     onPressed: () {
-                      Navigator.push(context, MaterialPageRoute(builder: (context) => ReminderPage()),);
+                      Navigator.push(context, MaterialPageRoute(builder: (context) => PerformanceTable()),);
+                     // Navigator.push(context, MaterialPageRoute(builder: (context) => ReminderPage()),);
                     },
                   ),
                   ElevatedButton(

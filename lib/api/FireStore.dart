@@ -3,6 +3,7 @@ import 'dart:async';
 import 'dart:io';
 
 import 'package:breastfirst/api/model/babydata.dart';
+import 'package:breastfirst/api/model/breastfeedingrecord.dart';
 import 'package:breastfirst/api/model/motherdata.dart';
 import 'package:breastfirst/statemanagement/valuenotifiers/NotifierCentral.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -15,6 +16,10 @@ class FireStoreConnect{
   CollectionReference motherCollection = FirebaseFirestore.instance.collection('MotherCollection');
   CollectionReference babyCollection = FirebaseFirestore.instance.collection('BabyCollection');
   CollectionReference breastFeedingCollection = FirebaseFirestore.instance.collection('BreastFeedingData');
+
+  String pumpingCollection = 'Pumping';
+  String bottlingcollection = 'Bottling';
+  String breastCollection = 'BreastFeeding';
 
  Future<void>? saveMotherData({required Motherdata motherdata}) async{
     Map<String, dynamic> data = {
@@ -66,11 +71,60 @@ class FireStoreConnect{
       'timestamp': DateTime.now()
     };
 
-    String bfeedingCollecton = isPumping == true ? "Pumping" :  isBottling == true ? "Bottling" : "BreastFeeding";
+    String bfeedingCollecton = isPumping == true ? "$pumpingCollection" :  isBottling == true ? "$bottlingcollection" : "$breastCollection";
 
    // DocumentReference breastFeedingData = breastFeedingCollection.doc("${motherDataNotifier.value.email}").collection("x").add(data);
     breastFeedingCollection.doc("${motherDataNotifier.value.email}").collection(bfeedingCollecton).add(data);
   }
+
+  Future<void> getbreastData(QuerySnapshot<Map<String, dynamic>> snapshot) async{
+    List<BreastFeedingRecord> breastFeeding = [];
+    List<BreastFeedingRecord> bottling = [];
+    List<BreastFeedingRecord> pumping = [];
+
+    List<QueryDocumentSnapshot<Map<String, dynamic>>> documents = snapshot.docs;
+
+    for (QueryDocumentSnapshot<Map<String, dynamic>> document in documents) {
+
+      List<BreastFeedingRecord> breastData = await FirebaseFirestore.instance
+          .collection('BreastFeedingData')
+          .doc(document.id)
+          .collection('$breastCollection')
+          .get()
+          .then((data) {
+        return data.docs.map((nestedDoc) => BreastFeedingRecord.fromFirestore(nestedDoc)).toList();
+      });
+      breastFeeding.addAll(breastData);
+
+      List<BreastFeedingRecord> pump = await FirebaseFirestore.instance
+          .collection('BreastFeedingData')
+          .doc(document.id)
+          .collection('$pumpingCollection')
+          .get()
+          .then((data) {
+        return data.docs.map((nestedDoc) => BreastFeedingRecord.fromFirestore(nestedDoc)).toList();
+      });
+      pumping.addAll(pump);
+
+      List<BreastFeedingRecord> bottle = await FirebaseFirestore.instance
+          .collection('BreastFeedingData')
+          .doc(document.id)
+          .collection('$bottlingcollection')
+          .get()
+          .then((data) {
+        return data.docs.map((nestedDoc) => BreastFeedingRecord.fromFirestore(nestedDoc)).toList();
+      });
+      bottling.addAll(bottle);
+
+    }
+
+    print('THE BREAST FEEDING SIZE : ${breastFeeding.length}');
+    print('THE PUMPING SIZE : ${pumping.length}');
+    print('THE BOTTLING SIZE : ${bottling.length}');
+
+  }
+
+
 
   // Future<void>? startCalendarMeeting({required CalendarModel calendarModel,  String? calltoken}) async{
   //   print('DOCUMENT_ID : Patient${calendarModel.patientID}_Provide${calendarModel.providerID}_${calendarModel.date}${calendarModel.hour}');

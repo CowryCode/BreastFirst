@@ -15,6 +15,7 @@ class _PumpingReportsScreenState extends State<PumpingReportsScreen> {
           icon: Icon(Icons.arrow_back),
           onPressed: () {
             // Handle back button press
+            Navigator.pop(context);
           },
         ),
         title: Text('Pumping reports'),

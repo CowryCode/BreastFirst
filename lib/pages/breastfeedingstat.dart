@@ -6,6 +6,7 @@ class BreastfeedingStatsScreen extends StatefulWidget {
 }
 
 class _BreastfeedingStatsScreenState extends State<BreastfeedingStatsScreen> {
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -36,7 +37,7 @@ class _BreastfeedingStatsScreenState extends State<BreastfeedingStatsScreen> {
             Container(
               height: 200,
               color: Colors.purple[100],
-              child: Center(child: Text("Chart Placeholder")),
+              child:  Center(child: Text("Chart Placeholder")),
             ),
             SizedBox(height: 20),
             Text("Average 19.1oz"),
