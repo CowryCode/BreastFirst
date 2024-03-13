@@ -3,6 +3,7 @@ import 'package:breastfirst/pages/addbaby_page3.dart';
 import 'package:breastfirst/pages/contactus.dart';
 import 'package:breastfirst/pages/invitation.dart';
 import 'package:breastfirst/pages/journalInput.dart';
+import 'package:breastfirst/pages/login-screen.dart';
 import 'package:flutter/material.dart';
 
 class SettingsScreen extends StatefulWidget {
@@ -89,7 +90,13 @@ class _SettingsScreenState extends State<SettingsScreen> {
           buildListTile('Share with family/friend', pageID: 5),
           buildListTile('Help & support', pageID: 6),
           buildListTile('Send feedback', pageID: 7),
-          ListTile(title: Text('App version 1.0')),
+          // ListTile(title: Text('App version 1.0')),
+          ElevatedButton(
+              onPressed: (){
+                Navigator.push(context, MaterialPageRoute(builder: (context) => SignInPage()),);
+              },
+              child: Text('Sign Out')
+          )
         ],
       ),
     );

@@ -6,4 +6,5 @@ final MobileURL = "https://com.cowrycode.easyfeed";
 
  final SmileGram_Mood_URL = "${baseURL}/smile/smilegram-mood";
 String LEADERBOARD_URL = "${baseURL}/easyfeed/get-leaderboard";
+String SAVE_Breast_Milk_Data_URL = "${baseURL}/easyfeed/save-breast-milk";
 

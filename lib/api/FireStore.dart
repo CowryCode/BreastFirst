@@ -63,7 +63,7 @@ class FireStoreConnect{
     babyDataNotifier.updateBabyDataNotifier(babydata: babydata);
   }
 
-  Future<void>? saveBreastMilkData({required int duration, required bool? isLeft, int? quantity, required bool isPumping,  bool isBottling = false}) async{
+  Future<void>? saveBreastMilkData1({required int duration, required bool? isLeft, int? quantity, required bool isPumping,  bool isBottling = false}) async{
     Map<String, dynamic> data = {
       'breastfeedingduration': duration,
       'breastSide': isPumping == true || isBottling == true ? '' : (isLeft == true) ? "LeftSide" : "RightSide",

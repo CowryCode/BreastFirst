@@ -1,8 +1,26 @@
 import 'package:breastfirst/pages/homepage.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'firebase_options.dart';
+
+final FirebaseMessaging _firebaseMessaging = FirebaseMessaging.instance;
+
+Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
+  print("Background Mesage: ${message.messageId}");
+}
+
+Future<void> requestPermission() async {
+  NotificationSettings settings = await _firebaseMessaging.requestPermission(
+    alert: true,
+    badge: true,
+    sound: true,
+    provisional: false,
+  );
+
+  print("User granted permission: ${settings.authorizationStatus}");
+}
 
 void main() async{
   WidgetsFlutterBinding.ensureInitialized();
