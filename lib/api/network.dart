@@ -66,20 +66,36 @@ class ApiAccess {
             "userID" : token,
           }),
     );
-
-    // "breastfeedingduration" : 10,
-    // "breastSide" : "LeftSide",
-    // "PumpedQuantity_ML": 20,
-    // "isbottling" : false,
-    // "ispumping": false,
-    // "isbreasting": true,
-    // "userID": "admin2@gmail.com"
-
     if (response.statusCode == 200) {
       print('Saved successfully . . . ');
     } else {
       //
     }
+  }
+
+  Future<bool> uploadDeviceIdentifier({required String deviceID}) async {
+    print('DEVICE ID : $deviceID');
+    // String token = await Localstorage().getString(key_login_token)??"";
+    //
+    //
+    // final response = await http.post(
+    //   Uri.parse(Save_Device_Identtifier_URL),
+    //   headers: <String, String>{
+    //     'Content-Type': 'application/json; charset=UTF-8',
+    //     'Accept': 'application/json',
+    //     'Origin': '$MobileURL',
+    //     'Authorization': 'Bearer $token'
+    //   },
+    //   body: jsonEncode(
+    //       <String, String?>{"value": deviceID}),
+    // );
+    //
+    // if (response.statusCode == 201) {
+    //   return true;
+    // }else{
+    //   return false;
+    // }
+    return true;
   }
 
 }

@@ -1,3 +1,5 @@
+import 'package:breastfirst/api/network.dart';
+import 'package:breastfirst/notification/notification.dart';
 import 'package:breastfirst/pages/achievement.dart';
 import 'package:breastfirst/pages/addbaby_page1.dart';
 import 'package:breastfirst/pages/addbaby_page3.dart';
@@ -10,6 +12,8 @@ import 'package:breastfirst/pages/remindaerpage.dart';
 import 'package:breastfirst/pages/setting.dart';
 import 'package:breastfirst/pages/trackbaby.dart';
 import 'package:breastfirst/pages/welcomepage.dart';
+import 'package:firebase_core/firebase_core.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 
 class MyHomePage extends StatefulWidget {
@@ -44,6 +48,21 @@ class _MyHomePageState extends State<MyHomePage> {
       _selectedIndex = index;
     });
     print('THE SCREAM : $_selectedIndex');
+  }
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    final firebaseMessaging = FCM();
+    firebaseMessaging.setNotifications();
+    WidgetsBinding.instance.addPostFrameCallback((_) async {
+
+      await Firebase.initializeApp();
+      await FirebaseMessaging.instance.getToken().then((token) {
+        ApiAccess().uploadDeviceIdentifier(deviceID: token!);
+      });
+    });
   }
 
   @override
