@@ -1,11 +1,17 @@
 import 'package:breastfirst/api/FireStore.dart';
+import 'package:breastfirst/api/model/MeasurementUnit.dart';
 import 'package:breastfirst/api/model/babydata.dart';
+import 'package:breastfirst/api/network.dart';
 import 'package:breastfirst/main.dart';
 import 'package:breastfirst/pages/homepage.dart';
 import 'package:breastfirst/statemanagement/valuenotifiers/NotifierCentral.dart';
 import 'package:flutter/material.dart';
 
 class AddBabyPage3 extends StatefulWidget {
+  final bool isSignUp;
+
+  const AddBabyPage3({Key? key, this.isSignUp = false}) : super(key: key);
+
   @override
   _AddBabyPage3State createState() => _AddBabyPage3State();
 }
@@ -28,7 +34,14 @@ class _AddBabyPage3State extends State<AddBabyPage3> {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              Text('Baby\'s weight', style: TextStyle(fontSize: 18)),
+              ValueListenableBuilder(
+                valueListenable: measurementUnitNotifier,
+                builder: (context, MeasurementUnit measurementUnit, child) {
+                  return Text("Baby\'s weight (${measurementUnit.weightUnit})",
+                      style: TextStyle(fontSize: 18));
+                },
+              ),
+              // Text('Baby\'s weight', style: TextStyle(fontSize: 18)),
               SizedBox(height: 10),
               TextField(
                 controller: _weightController,
@@ -39,26 +52,46 @@ class _AddBabyPage3State extends State<AddBabyPage3> {
                 ),
               ),
               SizedBox(height: 20),
-              Image.asset(  //
+              Image.asset(
+                //
                 'images/baby.webp',
-                height: 300,  // adjust this to your preference
+                height: 300, // adjust this to your preference
               ), // replace with your image path
               SizedBox(height: 30),
-              ElevatedButton(
-                onPressed: () {
-                  if(_weightController.text.isEmpty){
-                    _showSnackBar(context);
-                  }else{
-                    BabyData babyData = babyDataNotifier.value;
-                    babyData.setBabyWeight(babyWeight: _weightController.text.toString().trim());
-                    babyDataNotifier.updateBabyDataNotifier(babydata: babyData);
-                    print('BAY Weight IS : ${babyData.babyWeight}');
-                    FireStoreConnect().saveBabyData(babydata: babyData);
-                    Navigator.push(context, MaterialPageRoute(builder: (context) => MyHomePage()),);
-                  }
-                  // handle button press
+              ValueListenableBuilder(
+                valueListenable: measurementUnitNotifier,
+                builder: (context, MeasurementUnit measurementUnit, child) {
+                  return ElevatedButton(
+                    onPressed: () {
+                      if (_weightController.text.isEmpty) {
+                        _showSnackBar(context);
+                      } else {
+                        if (widget.isSignUp == false) {
+                          ApiAccess().saveWeight(
+                              weight:
+                                  "${_weightController.text.toString().trim()}${measurementUnit.weightUnit}");
+                          Navigator.pop(context);
+                        } else {
+                          BabyData babyData = babyDataNotifier.value;
+                          babyData.setBabyWeight(
+                              babyWeight:
+                                  _weightController.text.toString().trim());
+                          babyDataNotifier.updateBabyDataNotifier(
+                              babydata: babyData);
+                          print('BAY Weight IS : ${babyData.babyWeight}');
+                          FireStoreConnect().saveBabyData(babydata: babyData);
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => MyHomePage()),
+                          );
+                        }
+                      }
+                      // handle button press
+                    },
+                    child: (widget.isSignUp == false)? Text('Submit') :  Text('Continue'),
+                  );
                 },
-                child: Text('Continue'),
               ),
             ],
           ),

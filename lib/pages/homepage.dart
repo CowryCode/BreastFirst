@@ -12,6 +12,7 @@ import 'package:breastfirst/pages/remindaerpage.dart';
 import 'package:breastfirst/pages/setting.dart';
 import 'package:breastfirst/pages/trackbaby.dart';
 import 'package:breastfirst/pages/welcomepage.dart';
+import 'package:breastfirst/statemanagement/valuenotifiers/NotifierCentral.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
@@ -373,6 +374,9 @@ class _MyHomePageState extends State<MyHomePage> {
                   setState(() {
                     _isCentimeter = value;
                   });
+                  String ht = _isCentimeter ? 'cm' : 'inch';
+                  print('Height is : $ht');
+                  measurementUnitNotifier.upDateHeight(heightunit: ht);
                 },
                 secondary: _isCentimeter ? Text('cm') : Text('inch'),
               ),
@@ -383,6 +387,9 @@ class _MyHomePageState extends State<MyHomePage> {
                   setState(() {
                     _isKilogram = value;
                   });
+                  String wt = _isKilogram ? 'kg' : 'lb';
+                  measurementUnitNotifier.upDateWeight(weightunit: wt);
+                  print('Height is : $wt');
                 },
                 secondary: _isKilogram ? Text('kg') : Text('lb'),
               ),

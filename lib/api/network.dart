@@ -73,6 +73,100 @@ class ApiAccess {
     }
   }
 
+  Future<void> saveHeight({required String height}) async {
+    String? token = motherDataNotifier.value.email;
+
+    final response = await http.post(
+      Uri.parse(SAVE_baby_height),
+      headers: <String, String>{
+        'Content-Type': 'application/json; charset=UTF-8',
+        'Accept': 'application/json',
+        'Origin': '$MobileURL',
+        'Authorization': 'Bearer $token'
+      },
+      body: jsonEncode(
+          <String, dynamic>{
+            "height": height,
+            "userID": token,
+          }),
+    );
+    if (response.statusCode == 200) {
+      print('${response.body}');
+    } else {
+      print('Submission failed . . . ');
+    }
+  }
+
+  Future<void> saveWeight({required String weight}) async {
+    String? token = motherDataNotifier.value.email;
+
+    final response = await http.post(
+      Uri.parse(SAVE_baby_weight),
+      headers: <String, String>{
+        'Content-Type': 'application/json; charset=UTF-8',
+        'Accept': 'application/json',
+        'Origin': '$MobileURL',
+        'Authorization': 'Bearer $token'
+      },
+      body: jsonEncode(
+          <String, dynamic>{
+            "weight": weight,
+            "userID": token,
+          }),
+    );
+    if (response.statusCode == 200) {
+      print('${response.body}');
+    } else {
+      print('Submission failed . . . ');
+    }
+  }
+
+  Future<void> saveJournal({required String journal}) async {
+    String? token = motherDataNotifier.value.email;
+    final response = await http.post(
+      Uri.parse(SAVE_journal),
+      headers: <String, String>{
+        'Content-Type': 'application/json; charset=UTF-8',
+        'Accept': 'application/json',
+        'Origin': '$MobileURL',
+        'Authorization': 'Bearer $token'
+      },
+      body: jsonEncode(
+          <String, dynamic>{
+            "journal": journal,
+            "userID": token,
+          }),
+    );
+    if (response.statusCode == 200) {
+      print('${response.body}');
+    } else {
+      print('Submission failed . . . ');
+    }
+  }
+
+  Future<void> saveFeedBack({required String feedback}) async {
+    String? token = motherDataNotifier.value.email;
+    final response = await http.post(
+      Uri.parse(SAVE_FeedBack),
+      headers: <String, String>{
+        'Content-Type': 'application/json; charset=UTF-8',
+        'Accept': 'application/json',
+        'Origin': '$MobileURL',
+        'Authorization': 'Bearer $token'
+      },
+      body: jsonEncode(
+          <String, dynamic>{
+            "feedback": feedback,
+            "userID": token,
+          }),
+    );
+    if (response.statusCode == 200) {
+      print('${response.body}');
+    } else {
+      print('Submission failed . . . ');
+    }
+  }
+
   Future<bool> uploadDeviceIdentifier({required String deviceID}) async {
     print('DEVICE ID : $deviceID');
     // String token = await Localstorage().getString(key_login_token)??"";

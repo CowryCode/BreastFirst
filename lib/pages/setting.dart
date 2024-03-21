@@ -4,6 +4,7 @@ import 'package:breastfirst/pages/contactus.dart';
 import 'package:breastfirst/pages/invitation.dart';
 import 'package:breastfirst/pages/journalInput.dart';
 import 'package:breastfirst/pages/login-screen.dart';
+import 'package:breastfirst/statemanagement/valuenotifiers/NotifierCentral.dart';
 import 'package:flutter/material.dart';
 
 class SettingsScreen extends StatefulWidget {

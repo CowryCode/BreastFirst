@@ -1,9 +1,16 @@
+import 'package:breastfirst/api/model/MeasurementUnit.dart';
 import 'package:breastfirst/api/model/babydata.dart';
+import 'package:breastfirst/api/network.dart';
 import 'package:breastfirst/pages/addbaby_page3.dart';
+import 'package:breastfirst/statemanagement/valuenotifiers/MeasurementUnitNotifier.dart';
 import 'package:breastfirst/statemanagement/valuenotifiers/NotifierCentral.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 
 class AddBabyPage extends StatefulWidget {
+  final bool isSignUp;
+  const AddBabyPage({Key? key, this.isSignUp = false}) : super(key: key);
+
   @override
   _AddBabyPageState createState() => _AddBabyPageState();
 }
@@ -39,7 +46,16 @@ class _AddBabyPageState extends State<AddBabyPage> {
               ),
               Column(
                 children: [
-                  Text("Baby's height"),
+                  ValueListenableBuilder(
+                    valueListenable: measurementUnitNotifier,
+                    builder: (context, MeasurementUnit measurementUnit, child){
+                      return Text(
+                        "Baby's height (${measurementUnit.heighUnit})",
+                      );
+                    },
+
+                  ),
+                  // Text("Baby's height"),
                   SizedBox(height: 8),
                   TextField(
                     controller: _heightController,
@@ -47,28 +63,58 @@ class _AddBabyPageState extends State<AddBabyPage> {
                       hintText: '--',
                       border: OutlineInputBorder(),
                     ),
+                    // keyboardType: TextInputType., // Set keyboard type to number
+                    // inputFormatters: <TextInputFormatter>[
+                    //   FilteringTextInputFormatter.digitsOnly // Allow only digits
+                    // ],
                   ),
                 ],
               ),
+              // ValueListenableBuilder(
+              //   valueListenable: measurementUnitNotifier,
+              //   builder: (context, MeasurementUnit measurementUnit, child){
+              //     // print('Appointment 2: ${appointmentList.length}');
+              //     return Text(
+              //       "Baby's height ${measurementUnit.heighUnit}",
+              //       style: TextStyle(
+              //         fontSize: 20,
+              //         fontWeight: FontWeight.bold,
+              //       ),
+              //     );
+              //   },
+              //
+              // ),
               Image.asset(  //
                   'images/baby.webp',
                   height: 200,  // adjust this to your preference
                 ),
-              ElevatedButton(
-                onPressed: () {
-                  if(_heightController.text.isEmpty){
-                    _showSnackBar(context);
-                  }else{
-                    BabyData babyData = babyDataNotifier.value;
-                    babyData.setBabyHeight(babyHeight: _heightController.text.toString().trim());
-                    babyDataNotifier.updateBabyDataNotifier(babydata: babyData);
-                    print('BAY HEIGHT IS : ${babyData.babyHeight}');
-                    Navigator.push(context, MaterialPageRoute(builder: (context) => AddBabyPage3()),);
-                  }
-                  // Handle continue button press
+              ValueListenableBuilder(
+                valueListenable: measurementUnitNotifier,
+                builder: (context, MeasurementUnit measurementUnit, child){
+                  return ElevatedButton(
+                    onPressed: () {
+                      if(_heightController.text.isEmpty){
+                        _showSnackBar(context);
+                      }else{
+                        if(widget.isSignUp == false){
+                          ApiAccess().saveHeight(height: "${_heightController.text.toString().trim()}${measurementUnit.heighUnit}" );
+                          Navigator.pop(context);
+                        }else{
+                          BabyData babyData = babyDataNotifier.value;
+                          babyData.setBabyHeight(babyHeight: _heightController.text.toString().trim());
+                          babyDataNotifier.updateBabyDataNotifier(babydata: babyData);
+                          print('BAY HEIGHT IS : ${babyData.babyHeight}');
+                          Navigator.push(context, MaterialPageRoute(builder: (context) => AddBabyPage3()),);
+                        }
+                      }
+                      // Handle continue button press
+                    },
+                    child: (widget.isSignUp == false)? Text('Submit') :  Text('Continue'),
+                  );
                 },
-                child: Text('Continue'),
+
               ),
+
             ],
           ),
         ),
