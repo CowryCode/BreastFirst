@@ -49,8 +49,10 @@ class _AddBabyPageState extends State<AddBabyPage> {
                   ValueListenableBuilder(
                     valueListenable: measurementUnitNotifier,
                     builder: (context, MeasurementUnit measurementUnit, child){
+                      String? mstUnit = widget.isSignUp == true ? "" : measurementUnit.heighUnit == null? "(cm)" : "(${measurementUnit.heighUnit})";
                       return Text(
-                        "Baby's height (${measurementUnit.heighUnit})",
+                       // "Baby's height (${measurementUnit.heighUnit})",
+                        "Baby's height $mstUnit",
                       );
                     },
 
@@ -104,7 +106,7 @@ class _AddBabyPageState extends State<AddBabyPage> {
                           babyData.setBabyHeight(babyHeight: _heightController.text.toString().trim());
                           babyDataNotifier.updateBabyDataNotifier(babydata: babyData);
                           print('BAY HEIGHT IS : ${babyData.babyHeight}');
-                          Navigator.push(context, MaterialPageRoute(builder: (context) => AddBabyPage3()),);
+                          Navigator.push(context, MaterialPageRoute(builder: (context) => AddBabyPage3(isSignUp: widget.isSignUp,)),);
                         }
                       }
                       // Handle continue button press

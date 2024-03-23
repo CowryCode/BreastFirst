@@ -1,7 +1,9 @@
 import 'dart:io';
 
+import 'package:breastfirst/api/model/diskstorage.dart';
 import 'package:breastfirst/api/secret.dart';
 import 'package:breastfirst/pages/homepage.dart';
+import 'package:breastfirst/pages/login-screen.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
@@ -15,24 +17,11 @@ final FirebaseMessaging _firebaseMessaging = FirebaseMessaging.instance;
 void main() async{
   WidgetsFlutterBinding.ensureInitialized();
   await init();
-  runApp(const MyApp());
-}
 
-// Future init() async{
-//   await Firebase.initializeApp(
-//     options: DefaultFirebaseOptions.currentPlatform,
-//   );
-//
-//   FirebaseAuth.instance
-//       .authStateChanges()
-//       .listen((User? user) {
-//     if (user == null) {
-//       print('User is currently signed out!');
-//     } else {
-//       print('User is signed in!');
-//     }
-//   });
-// }
+  bool loggedin = await Localstorage().getUserIDLocal() != null;
+  runApp(MyApp(isLoggedin: loggedin));
+  // runApp(const MyApp());
+}
 
 Future init() async{
 
@@ -72,7 +61,9 @@ Future init() async{
 }
 
 class MyApp extends StatelessWidget {
-  const MyApp({super.key});
+  final isLoggedin;
+  const MyApp({Key? key, this.isLoggedin = true}) : super(key: key);
+ // const MyApp({super.key});
 
   // This widget is the root of your application.
   @override
@@ -84,7 +75,7 @@ class MyApp extends StatelessWidget {
         useMaterial3: true,
       ),
     //  home: const MyHomePage(title: 'Flutter Demo Home Page'),
-      home: const MyHomePage(),
+      home: isLoggedin == true ? const MyHomePage() : SignInPage(),
     );
   }
 }

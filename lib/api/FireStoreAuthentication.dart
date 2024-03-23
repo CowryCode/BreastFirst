@@ -1,6 +1,8 @@
 
 import 'package:breastfirst/api/FireStore.dart';
+import 'package:breastfirst/api/model/diskstorage.dart';
 import 'package:breastfirst/api/model/motherdata.dart';
+import 'package:breastfirst/api/network.dart';
 import 'package:breastfirst/statemanagement/valuenotifiers/NotifierCentral.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
@@ -17,6 +19,7 @@ class FireStoreAuthentication {
       Motherdata mData = Motherdata();
       mData.init(email: email, isPregnant: pregnancyStatus, name: name);
       FireStoreConnect().saveMotherData(motherdata: mData);
+      ApiAccess().creatUserProfile(email: email, name: name);
       return credential;
     } on FirebaseAuthException catch (e) {
       if (e.code == 'weak-password') {
@@ -38,7 +41,10 @@ class FireStoreAuthentication {
 
       if(credential.user != null) {
         print('Login was successful . . .');
-        motherDataNotifier.updateEmail(email: email);
+        //motherDataNotifier.updateEmail(email: email);
+        ApiAccess().getAwsUserPrfoile(userID:email);
+        Localstorage().saveUserIDLocal(email);
+        Localstorage().savePasswordLocal(password: password);
       }
       return true;
     } on FirebaseAuthException catch (e) {

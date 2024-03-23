@@ -139,7 +139,7 @@ class _AddBabyDetailsPageState extends State<AddBabyDetailsPage> {
               onPressed: () {
                 // Handle continue button press
                 if(_submitAction() == true){
-                   Navigator.push(context, MaterialPageRoute(builder: (context) => AddBabyPage()),);
+                   Navigator.push(context, MaterialPageRoute(builder: (context) => AddBabyPage(isSignUp: true,)),);
                 }else{
                   _showSnackBar(context);
                 }

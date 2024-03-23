@@ -37,7 +37,9 @@ class _AddBabyPage3State extends State<AddBabyPage3> {
               ValueListenableBuilder(
                 valueListenable: measurementUnitNotifier,
                 builder: (context, MeasurementUnit measurementUnit, child) {
-                  return Text("Baby\'s weight (${measurementUnit.weightUnit})",
+                  String? mstUnit = widget.isSignUp == true ? "" :  measurementUnit.heighUnit == null? "(kg)" : "(${measurementUnit.weightUnit})";
+                  return Text("Baby\'s weight $mstUnit",
+                  //return Text("Baby\'s weight (${measurementUnit.weightUnit})",
                       style: TextStyle(fontSize: 18));
                 },
               ),

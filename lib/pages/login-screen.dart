@@ -129,8 +129,8 @@ class _SignInPageState extends State<SignInPage> {
       // bool _ispregant = (_selectedStatus == '0') ? true : false;
 
     return FireStoreAuthentication().signInUser(
-          email: _emailController.text.toString(),
-          password: _passwordController.text.toString(),
+          email: _emailController.text.toString().trim(),
+          password: _passwordController.text.toString().trim(),
       );
     }
   }

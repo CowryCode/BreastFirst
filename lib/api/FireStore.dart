@@ -16,7 +16,10 @@ class FireStoreConnect{
   CollectionReference motherCollection = FirebaseFirestore.instance.collection('MotherCollection');
   CollectionReference babyCollection = FirebaseFirestore.instance.collection('BabyCollection');
   CollectionReference breastFeedingCollection = FirebaseFirestore.instance.collection('BreastFeedingData');
+  CollectionReference journalCollection = FirebaseFirestore.instance.collection('JournalCollection');
+  CollectionReference shareCollection = FirebaseFirestore.instance.collection('ShareCollection');
 
+  String JournalID = "Journal";
   String pumpingCollection = 'Pumping';
   String bottlingcollection = 'Bottling';
   String breastCollection = 'BreastFeeding';
@@ -124,122 +127,34 @@ class FireStoreConnect{
 
   }
 
+  Future<void>? saveJournal({required String userID, required String journal}) async{
+    Map<String, dynamic> data = {
+      "journal": journal,
+      "userID": userID,
+      'timestamp': DateTime.now()
+    };
 
+    journalCollection.doc(userID).collection(JournalID).add(data);
+  }
 
-  // Future<void>? startCalendarMeeting({required CalendarModel calendarModel,  String? calltoken}) async{
-  //   print('DOCUMENT_ID : Patient${calendarModel.patientID}_Provide${calendarModel.providerID}_${calendarModel.date}${calendarModel.hour}');
-  //   print('THE TOKEN: $calltoken');
-  //   Map<String, dynamic> data = {
-  //     //'onCall': true,
-  //     'onCall': (calltoken == null) ? false : true,
-  //     'token' : calltoken,
-  //   };
-  //   try{
-  //     DocumentReference appointment = activeAppointmentCollection
-  //         .doc("Patient${calendarModel.patientID}_Provide${calendarModel.providerID}_${calendarModel.date}${calendarModel.hour}");
-  //     await appointment.update(data);
-  //   }catch(e){
-  //     print('Update failed with error : ${e.toString()}');
-  //   }
-  // }
+  Future<void>? shareProgress({required String user, required String name}) async{
+    String? token = motherDataNotifier.value.email;
+    Map<String, dynamic> data = {
+      'sharedBy': token,
+      'sharedTo': user,
+      'name': name,
+      'timestamp': DateTime.now()
+    };
 
-  // Future<void>? saveMedicalReport_Provider({required MedicalReport medicalreport}) async{
-  //   try{
-  //     Map<String, dynamic> data = {
-  //       'dateCreated': medicalreport.dateCreated,
-  //       'reportContent': medicalreport.reportContent,
-  //       'providerID': medicalreport.providerID,
-  //       'patientID' : medicalreport.patientID,
-  //     };
-  //     medicalReportsCollection.doc("Patient${medicalreport.patientID}_report").collection("MedicalReports").add(data);
-  //     print('Saved report successfully');
-  //   }catch (e){
-  //     print('Report saving failed');
-  //   }
-  //
-  // }
+    shareCollection.add(data);
+  }
 
-
-  // Future<void> deleteAppointment({required CalendarModel appointment}) async {
-  //   String docId = "DocumentID";
-  //
-  //  // int hourinUtC = appointment.getHourinUTC();
-  //   int hourinUtC = appointment.hour!;
-  //
-  //   activeAppointmentCollection
-  //       .doc("Patient${appointment.patientID}_Provide${appointment.providerID}_${appointment.date}$hourinUtC")
-  //       .delete()
-  //       .then((value) => print("Appointment Successfully Deleted"))
-  //       .catchError((error) => print("Failed to delete document: $error"));
-  //
-  //   doctorAppointmentCollection
-  //       .doc("Provider_${appointment.providerID}")
-  //       .collection(appointment.date!).doc('$hourinUtC')
-  //       .delete()
-  //       .then((value) => print("ProviderRecord Successfully Deleted"))
-  //       .catchError((error) => print("Failed to delete document: $error"));
-  // }
-
-  // Future<void> uploadProfilePicture({ required File image, String? imageID, required bool userIsprovider, required String userID }) async {
-  //   try{
-  //     String imageIdenifier = (imageID == null)? DateTime.now().toIso8601String() : imageID;
-  //     String userType = (userIsprovider) ? "Provider":"Patient";
-  //     Reference storageReference = FirebaseStorage.instance.ref().child('users-profile-images/$imageIdenifier.png');
-  //     UploadTask uploadTask = storageReference.putFile(image);
-  //     await uploadTask.whenComplete(() async {
-  //       String imageUrl = await storageReference.getDownloadURL();
-  //
-  //       // Define the data you want to save in the document
-  //       Map<String, dynamic> userData = {
-  //         'url': '$imageUrl',
-  //         'dateUploaded':  DateTime.now(),
-  //         'imageIdentifier': imageIdenifier
-  //       };
-  //       await profilePictureCollection.doc('${userType}').collection("ProfileImages").doc('${userType}_${userID}').set(userData);
-  //
-  //     });
-  //   }catch(error){
-  //     // Some error occured
-  //   }
-  // }
-
-  // Future<void> uploadLicence({required File image, required String docName, required String dateaWarded, required int providerID}) async {
-  //   try {
-  //     print('Document : $docName');
-  //     print('Date Awarded : $dateaWarded');
-  //     print('Provider ID : $providerID');
-  //
-  //     String imageIdenifier = DateTime.now().toIso8601String();
-  //     Reference storageReference = FirebaseStorage.instance.ref().child('provider-licences-images/$imageIdenifier.png');
-  //    // Reference storageReference = FirebaseStorage.instance.ref().child('provider-licences-images/${DateTime.now().toIso8601String()}.png');
-  //     UploadTask uploadTask = storageReference.putFile(image);
-  //     await uploadTask.whenComplete(() async {
-  //       String imageUrl = await storageReference.getDownloadURL();
-  //
-  //       Map<String, dynamic> userData = {
-  //         'imageUrl': '$imageUrl',
-  //         'document_Name':  docName,
-  //         'Date_Awarded':  dateaWarded,
-  //         'imageIdentifier': imageIdenifier
-  //       };
-  //       await providerLicencesCollection.doc('Provider_$providerID').collection("licenses").doc('$imageIdenifier').set(userData);
-  //
-  //
-  //     });
-  //
-  //   } catch (e) {
-  //     print('Error saving document: $e');
-  //   }
-  // }
-
-  // Future<void> deleteLicence({required int  providerID, required String imgIdentifier}) async {
-  //   providerLicencesCollection
-  //       .doc('Provider_$providerID').collection("licenses").doc("$imgIdentifier")
-  //       .delete()
-  //       .then((value) => {
-  //          FirebaseStorage.instance.ref().child('provider-licences-images/$imgIdentifier.png').delete(),
-  //          print('Deleted successfully')
-  //        })
-  //       .catchError((error) => print("Failed to delete document: $error"));
-  // }
+  Future<void> deleteSharing({required String  sharedBy, required String sharedTo}) async {
+    shareCollection.where("sharedBy", isEqualTo: sharedBy)
+    .where("sharedTo", isEqualTo: sharedTo).get().then((querySnapshot) =>{
+    querySnapshot.docs.forEach((doc) async {
+    await doc.reference.delete();
+    }),
+    });
+  }
 }

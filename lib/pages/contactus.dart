@@ -20,6 +20,7 @@ class _ContactUsState extends State<ContactUs> {
           icon: Icon(Icons.arrow_back),
           onPressed: () {
             // Handle back button press
+            Navigator.pop(context);
           },
         ),
         actions: [

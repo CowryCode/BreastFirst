@@ -1,3 +1,4 @@
+import 'package:breastfirst/api/model/AWSuserProfile.dart';
 import 'package:breastfirst/api/network.dart';
 import 'package:breastfirst/notification/notification.dart';
 import 'package:breastfirst/pages/achievement.dart';
@@ -5,20 +6,21 @@ import 'package:breastfirst/pages/addbaby_page1.dart';
 import 'package:breastfirst/pages/addbaby_page3.dart';
 import 'package:breastfirst/pages/contactus.dart';
 import 'package:breastfirst/pages/invitation.dart';
+import 'package:breastfirst/pages/journal.dart';
 import 'package:breastfirst/pages/journalInput.dart';
 import 'package:breastfirst/pages/login-screen.dart';
 import 'package:breastfirst/pages/pumping.dart';
 import 'package:breastfirst/pages/remindaerpage.dart';
 import 'package:breastfirst/pages/setting.dart';
 import 'package:breastfirst/pages/trackbaby.dart';
-import 'package:breastfirst/pages/welcomepage.dart';
 import 'package:breastfirst/statemanagement/valuenotifiers/NotifierCentral.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 
 class MyHomePage extends StatefulWidget {
-  //const MyHomePage({super.key, required this.title});
+
   const MyHomePage({
     super.key,
   });
@@ -51,6 +53,7 @@ class _MyHomePageState extends State<MyHomePage> {
     print('THE SCREAM : $_selectedIndex');
   }
 
+
   @override
   void initState() {
     // TODO: implement initState
@@ -58,22 +61,55 @@ class _MyHomePageState extends State<MyHomePage> {
     final firebaseMessaging = FCM();
     firebaseMessaging.setNotifications();
     WidgetsBinding.instance.addPostFrameCallback((_) async {
+      AWSuserProfile profile = await ApiAccess().getAwsUserPrfoile();
+      if(profile == null){
+        Navigator.push(context, MaterialPageRoute(builder: (context) => SignInPage()),);
+      }else{
+        await Firebase.initializeApp();
+        await FirebaseMessaging.instance.getToken().then((token) {
+          ApiAccess().uploadDeviceIdentifier(deviceID: token!);
+        });
+      }
 
-      await Firebase.initializeApp();
-      await FirebaseMessaging.instance.getToken().then((token) {
-        ApiAccess().uploadDeviceIdentifier(deviceID: token!);
-      });
     });
   }
 
   @override
   Widget build(BuildContext context) {
+    String? USERid = motherDataNotifier.value.email;
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.white,
         elevation: 0,
         leading: Icon(Icons.person, color: Colors.grey),
-        title: Text("<Baby's name>", style: TextStyle(color: Colors.black)),
+        //title: Text("<Baby's name>", style: TextStyle(color: Colors.black)),
+        title: Container(
+          child: StreamBuilder<QuerySnapshot>(
+            stream: FirebaseFirestore.instance.collection('MotherCollection').where("email", isEqualTo: USERid)
+                .snapshots(),
+            builder: (BuildContext context,
+                AsyncSnapshot<QuerySnapshot> snapshot) {
+              if (snapshot.hasError) {
+                return Text('');
+              }
+              if (snapshot.connectionState == ConnectionState.waiting) {
+                return Text('');
+              }
+              if (!snapshot.hasData) {
+                return Text('');
+              } else {
+                if(snapshot.data!.size > 0){
+                  Map<String, dynamic> data = snapshot.data!.docs.first.data() as Map<String, dynamic>;
+                  return Text(data["name"], style: TextStyle(color: Colors.black));
+                }else{
+                  return Text("");
+                }
+
+              }
+
+            },
+          ),
+        ),
         actions: [
           Icon(Icons.equalizer, color: Colors.purple),
         ],
@@ -104,7 +140,7 @@ class _MyHomePageState extends State<MyHomePage> {
             actionChoice: 0),
         _activityButton(Icons.feed, 'Feeding', Colors.orange,
             actionChoice: 1),
-        _activityButton(Icons.child_care, 'Diaper change', Colors.blue,
+        _activityButton(Icons.child_care, 'My Journal', Colors.blue,
             actionChoice: 2),
         //_activityButton(Icons.bedtime, 'Sleep', Colors.red, actionChoice: 3),
         _activityButton(
@@ -131,216 +167,7 @@ class _MyHomePageState extends State<MyHomePage> {
             ),
           ),
         ),
-        // Wrap(
-        //   children: [
-        //     ElevatedButton(
-        //       child: Text('Login'),
-        //       onPressed: () {
-        //         Navigator.push(
-        //           context,
-        //           MaterialPageRoute(builder: (context) => SignInPage()),
-        //         );
-        //       },
-        //     ),
-        //     ElevatedButton(
-        //       child: Text('Reminder-LeaderBoard'),
-        //       onPressed: () {
-        //         Navigator.push(
-        //           context,
-        //           MaterialPageRoute(
-        //               builder: (context) => PerformanceTable()),
-        //         );
-        //         // Navigator.push(context, MaterialPageRoute(builder: (context) => ReminderPage()),);
-        //       },
-        //     ),
-        //     ElevatedButton(
-        //       child: Text('Add_Baby1'),
-        //       onPressed: () {
-        //         Navigator.push(
-        //           context,
-        //           MaterialPageRoute(builder: (context) => AddBabyPage()),
-        //         );
-        //       },
-        //     ),
-        //     ElevatedButton(
-        //       child: Text('Add_Baby2'),
-        //       onPressed: () {
-        //         Navigator.push(
-        //           context,
-        //           MaterialPageRoute(
-        //               builder: (context) => AddBabyDetailsPage()),
-        //         );
-        //       },
-        //     ),
-        //     ElevatedButton(
-        //       child: Text('Add_Baby3'),
-        //       onPressed: () {
-        //         Navigator.push(
-        //           context,
-        //           MaterialPageRoute(builder: (context) => AddBabyPage3()),
-        //         );
-        //       },
-        //     ),
-        //     ElevatedButton(
-        //       child: Text('welcome'),
-        //       onPressed: () {
-        //         Navigator.push(
-        //           context,
-        //           MaterialPageRoute(builder: (context) => WelcomePage()),
-        //         );
-        //       },
-        //     ),
-        //     ElevatedButton(
-        //       child: Text('tracker'),
-        //       onPressed: () {
-        //         Navigator.push(
-        //           context,
-        //           MaterialPageRoute(
-        //               builder: (context) => FeedingsTracker()),
-        //         );
-        //       },
-        //     ),
-        //     ElevatedButton(
-        //       child: Text('lullaby'),
-        //       onPressed: () {
-        //         Navigator.push(
-        //           context,
-        //           MaterialPageRoute(
-        //               builder: (context) => LullabiesScreen()),
-        //         );
-        //       },
-        //     ),
-        //     ElevatedButton(
-        //       child: Text('congrat'),
-        //       onPressed: () {
-        //         Navigator.push(
-        //           context,
-        //           MaterialPageRoute(
-        //               builder: (context) => CongratulationsScreen()),
-        //         );
-        //       },
-        //     ),
-        //     ElevatedButton(
-        //       child: Text('selection'),
-        //       onPressed: () {
-        //         Navigator.push(
-        //           context,
-        //           MaterialPageRoute(
-        //               builder: (context) => SelectionScreen()),
-        //         );
-        //       },
-        //     ),
-        //     ElevatedButton(
-        //       child: Text('appreciate'),
-        //       onPressed: () {
-        //         Navigator.push(
-        //           context,
-        //           MaterialPageRoute(
-        //               builder: (context) => AppreciationScreen()),
-        //         );
-        //       },
-        //     ),
-        //     ElevatedButton(
-        //       child: Text('pumping'),
-        //       onPressed: () {
-        //         Navigator.push(
-        //           context,
-        //           MaterialPageRoute(
-        //               builder: (context) => PumpingScreen()),
-        //         );
-        //       },
-        //     ),
-        //     ElevatedButton(
-        //       child: Text('pumpingreport'),
-        //       onPressed: () {
-        //         Navigator.push(
-        //           context,
-        //           MaterialPageRoute(
-        //               builder: (context) => PumpingReportsScreen()),
-        //         );
-        //       },
-        //     ),
-        //     ElevatedButton(
-        //       child: Text('store'),
-        //       onPressed: () {
-        //         Navigator.push(
-        //           context,
-        //           MaterialPageRoute(builder: (context) => StoreScreen()),
-        //         );
-        //       },
-        //     ),
-        //     ElevatedButton(
-        //       child: Text('achievement'),
-        //       onPressed: () {
-        //         Navigator.push(
-        //           context,
-        //           MaterialPageRoute(
-        //               builder: (context) => AchievementsScreen()),
-        //         );
-        //       },
-        //     ),
-        //     ElevatedButton(
-        //       child: Text('babyroom'),
-        //       onPressed: () {
-        //         Navigator.push(
-        //           context,
-        //           MaterialPageRoute(
-        //               builder: (context) => BabysRoomScreen()),
-        //         );
-        //       },
-        //     ),
-        //     ElevatedButton(
-        //       child: Text('stat'),
-        //       onPressed: () {
-        //         Navigator.push(
-        //           context,
-        //           MaterialPageRoute(
-        //               builder: (context) => BreastfeedingStatsScreen()),
-        //         );
-        //       },
-        //     ),
-        //     ElevatedButton(
-        //       child: Text('moodcheck'),
-        //       onPressed: () {
-        //         Navigator.push(
-        //           context,
-        //           MaterialPageRoute(
-        //               builder: (context) => MoodCheckScreen()),
-        //         );
-        //       },
-        //     ),
-        //     ElevatedButton(
-        //       child: Text('setting'),
-        //       onPressed: () {
-        //         Navigator.push(
-        //           context,
-        //           MaterialPageRoute(
-        //               builder: (context) => SettingsScreen()),
-        //         );
-        //       },
-        //     ),
-        //     ElevatedButton(
-        //       child: Text('invitation'),
-        //       onPressed: () {
-        //         Navigator.push(
-        //           context,
-        //           MaterialPageRoute(
-        //               builder: (context) => InvitationScreen()),
-        //         );
-        //       },
-        //     ),
-        //     ElevatedButton(
-        //       child: Text('signup'),
-        //       onPressed: () {
-        //         Navigator.push(
-        //           context,
-        //           MaterialPageRoute(
-        //               builder: (context) => RegistrationScreen()),
-        //         );
-        //       },
-        //     ),
-        //   ],
-        // ),
+
       ],
     );
   }
@@ -411,6 +238,7 @@ class _MyHomePageState extends State<MyHomePage> {
               ListTile(title: Text('App version 1.0')),
               ElevatedButton(
                   onPressed: (){
+                    ApiAccess().logout();
                     Navigator.push(context, MaterialPageRoute(builder: (context) => SignInPage()),);
                   },
                   child: Text('Sign Out')
@@ -498,24 +326,14 @@ class _MyHomePageState extends State<MyHomePage> {
               MaterialPageRoute(builder: (context) => AchievementsScreen()),
             );
           case 1:
-            print('Feeding clicked');
-            Navigator.push(
-              context,
-              MaterialPageRoute(builder: (context) => FeedingsTracker()),
-            );
+            Navigator.push(context, MaterialPageRoute(builder: (context) => FeedingsTracker()),);
           case 2:
-            print('Diaper Change clicked');
+            Navigator.push(context, MaterialPageRoute(builder: (context) => JournalScreen()));
           case 3:
             print('Sleep clicked');
           case 4:
             print('Pumping clicked');
-            Navigator.push(
-              context,
-              MaterialPageRoute(
-                  builder: (context) => PumpingScreen(
-                        pumping: true,
-                      )),
-            );
+            Navigator.push(context, MaterialPageRoute(builder: (context) => PumpingScreen(pumping: true)),);
           case 5:
             print('Other Activities clicked');
         }

@@ -12,4 +12,9 @@ String SAVE_baby_height = "${baseURL}/easyfeed/save-height";
 String SAVE_baby_weight = "${baseURL}/easyfeed/save-weight";
 String SAVE_journal = "${baseURL}/easyfeed/save-journal";
 String SAVE_FeedBack = "${baseURL}/easyfeed/save-feedback";
+String CREATE_UserProfile = "${baseURL}/easyfeed/save-userprofile";
+String SAVE_DEVICEID = "${baseURL}/easyfeed/save-deviceId";
+String Get_AwsUserProfile = "${baseURL}/easyfeed/get-userprofile";
+
+
 

@@ -1,8 +1,10 @@
 import 'package:breastfirst/api/FireStore.dart';
 import 'package:breastfirst/api/model/leaderboard.dart';
+import 'package:breastfirst/api/model/motherdata.dart';
 import 'package:breastfirst/api/network.dart';
 import 'package:breastfirst/pages/babyroom.dart';
 import 'package:breastfirst/pages/components/performancetable.dart';
+import 'package:breastfirst/pages/invitation.dart';
 import 'package:breastfirst/pages/store.dart';
 import 'package:breastfirst/statemanagement/valuenotifiers/NotifierCentral.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -15,6 +17,10 @@ class AchievementsScreen extends StatefulWidget {
 
 class _AchievementsScreenState extends State<AchievementsScreen> {
   Future<LeaderBoard>? leaderboard;
+  
+  bool viewOthersAchievement = false;
+  bool selectUser = false;
+  String? selectedUser = '';
 
   @override
   void initState() {
@@ -38,99 +44,281 @@ class _AchievementsScreenState extends State<AchievementsScreen> {
         ],
       ),
       body: SingleChildScrollView(
-        child: FutureBuilder<LeaderBoard>(
-          future: leaderboard,
-          builder: (BuildContext context, AsyncSnapshot<LeaderBoard> snapshot){
-            if (snapshot.connectionState == ConnectionState.waiting) {
-              return Center(child: CircularProgressIndicator());
-            } else if (snapshot.hasError) {
-              // If there's an error with the Future, display an error message.
-              return Center(child: Text('Error: having some delays at the moment ${snapshot.error}'));
-            } else if (!snapshot.hasData) {
-              return Center(child: Text('No data available'));
-            }
-
-            LeaderBoard? data = snapshot.data;
-            // Do something with 'data'...
-
-            return _body(leaderBoard: data!);
-          },
-        ) ),
-        bottomNavigationBar: BottomNavigationBar(
-          items: [
-            BottomNavigationBarItem(icon: Icon(Icons.home), label: 'Home'),
-            BottomNavigationBarItem(icon: Icon(Icons.room), label: 'Room'),
-            BottomNavigationBarItem(icon: Icon(Icons.settings), label: 'Settings'),
-          ],
-        ),
-      //   Padding(
-      //     padding: const EdgeInsets.all(16.0),
-      //     child: Column(
-      //       children: [
-      //         achievementItem(title:'Breastfeeding', target: '< 8 times per day', score: 5, progress: 80, isbreastfeeding: true),
-      //         achievementItem(title: 'Pumping', target: '< 5 times per day', score:  4, progress: 90, isPumping: true),
-      //         achievementItem(title: 'Diaper', target: '8 times per day', score: 2, progress: 16),
-      //         achievementItem(title:'Sleep', target: '< 15 hours per day', score: 15, progress: 100),
-      //         SizedBox(height : 30),
-      //         Wrap(
-      //           children: [
-      //             ElevatedButton(
-      //               child: Text('store test'),
-      //               onPressed: () {
-      //                 ApiAccess().getLeaderBoard();
-      //                 //Navigator.push(context, MaterialPageRoute(builder: (context) => StoreScreen()),);
-      //               },
-      //             ),
-      //             ElevatedButton(
-      //               child: Text('babyroom'),
-      //               onPressed: () {
-      //                 Navigator.push(context, MaterialPageRoute(builder: (context) => BabysRoomScreen()),);
-      //               },
-      //             ),
-      //           ],
-      //         ),
-      //       ],
-      //     ),
-      //   ),
-      // ),
-      // bottomNavigationBar: BottomNavigationBar(
-      //   items: [
-      //     BottomNavigationBarItem(icon: Icon(Icons.home), label: 'Home'),
-      //     BottomNavigationBarItem(icon: Icon(Icons.room), label: 'Room'),
-      //     BottomNavigationBarItem(icon: Icon(Icons.settings), label: 'Settings'),
-      //   ],
-      // ),
+        child:  _body(),
+       )
     );
   }
 
-  Widget _body({required LeaderBoard leaderBoard}){
-    return    Padding(
+  Widget _othersPersonalAchievements(){
+    return FutureBuilder<LeaderBoard>(
+      future: leaderboard,
+      builder: (BuildContext context, AsyncSnapshot<LeaderBoard> snapshot){
+        if (snapshot.connectionState == ConnectionState.waiting) {
+          return Center(child: CircularProgressIndicator());
+        }
+        if (snapshot.hasError) {
+          // return Center(child: Text('Error: having some delays at the moment ${snapshot.error}'));
+          return Center(child: Text('No data available'));
+        }
+        if (!snapshot.hasData) {
+          return Center(child: Text('No data available'));
+        }else{
+          LeaderBoard? leaderboard = snapshot.data;
+          return Padding(
+            padding: const EdgeInsets.all(16.0),
+            child: Column(
+              children: [
+                achievementItem(title:'Breastfeeding', target: '< ${leaderboard!.userStatus!.todayBreastFeedingCount} times per day', score: 5, progress: 80, isbreastfeeding: true),
+                achievementItem(title: 'Pumping', target: '< ${leaderboard.userStatus!.todayPumpingCount} times per day', score:  4, progress: 90, isPumping: true),
+                achievementItem(title: 'Bottling', target: ' < ${leaderboard.userStatus!.todayBottlingCount} times per day', score: 2, progress: 16),
+                achievementItem(title:'Sleep', target: '< 15 hours per day', score: 15, progress: 100),
+                SizedBox(height : 10),
+                Wrap(
+                  children: [
+                    ElevatedButton(
+                      child: Text('Share My \n Achievements', textAlign: TextAlign.center,),
+                      onPressed: () {
+                        Navigator.push(context, MaterialPageRoute(builder: (context) => InvitationScreen()),);
+                        //Navigator.push(context, MaterialPageRoute(builder: (context) => StoreScreen()),);
+                      },
+                    ),
+                    ElevatedButton(
+                      child: (viewOthersAchievement)? Text('View \n Leaderboard', textAlign: TextAlign.center,) : Text('View Others \n Achievements', textAlign: TextAlign.center,),
+                      onPressed: () {
+                        setState(() {
+                          viewOthersAchievement = !viewOthersAchievement;
+                        });
+                      },
+                    ),
+                    // ElevatedButton(
+                    //   child: Text('babyroom'),
+                    //   onPressed: () {
+                    //     Navigator.push(context, MaterialPageRoute(builder: (context) => BabysRoomScreen()),);
+                    //   },
+                    // ),
+                  ],
+                ),
+                SizedBox(height : 10),
+                Divider(height: 5,),
+                // SizedBox(height : 10),
+                // (!viewOthersAchievement)? PerformanceTable()
+                //     :
+                // ValueListenableBuilder(
+                //   valueListenable: motherDataNotifier,
+                //   builder: (context, Motherdata motherdata, child){
+                //     return StreamBuilder<QuerySnapshot>(
+                //         stream: FirebaseFirestore.instance.collection('ShareCollection').where("sharedTo", isEqualTo: motherdata.email)
+                //             .snapshots(),
+                //         builder: (BuildContext context,
+                //             AsyncSnapshot<QuerySnapshot> snapshot) {
+                //           if (snapshot.hasError) {
+                //             return const Text('No shared progress yet');
+                //           }
+                //           if (snapshot.connectionState == ConnectionState.waiting) {
+                //             return const Text('No shared progress yet');
+                //           }
+                //           if (!snapshot.hasData) {
+                //             return const Text('No shared progress yet');
+                //           } else {
+                //             if (snapshot.data!.size > 0) {
+                //               Map<String, dynamic> data = snapshot.data!.docs.first
+                //                   .data() as Map<String, dynamic>;
+                //               //return Text(data["name"], style: TextStyle(color: Colors.black));
+                //               return Wrap(
+                //                 children: snapshot.data!.docs.map((
+                //                     DocumentSnapshot document) {
+                //                   if (document == null)
+                //                     return SizedBox(
+                //                       height: 10,
+                //                     );
+                //                   Map<String, dynamic> data = document.data()! as Map<
+                //                       String,
+                //                       dynamic>;
+                //                   //Timestamp timestamp = data['timestamp'];
+                //                   return ElevatedButton(
+                //                     child: Text('${data['name']}'),
+                //                     onPressed: () {
+                //                     },
+                //                   );
+                //                 }).toList(),
+                //               );
+                //             }
+                //           }
+                //           return const Text('');
+                //         });
+                //   },
+                // ),
+
+
+              ],
+            ),
+          );
+        }
+      },
+    );
+  }
+
+
+  Widget _personalAchievements(){
+    return ValueListenableBuilder(
+        valueListenable: leaderBoardNotifier,
+        builder: (context, LeaderBoard leaderboard, child){
+          return Padding(
+            padding: const EdgeInsets.all(16.0),
+            child: Column(
+              children: [
+                achievementItem(title:'Breastfeeding', target: '< ${leaderboard.userStatus!.todayBreastFeedingCount} times per day', score: 5, progress: 80, isbreastfeeding: true),
+                achievementItem(title: 'Pumping', target: '< ${leaderboard.userStatus!.todayPumpingCount} times per day', score:  4, progress: 90, isPumping: true),
+                achievementItem(title: 'Bottling', target: ' < ${leaderboard.userStatus!.todayBottlingCount} times per day', score: 2, progress: 16),
+                achievementItem(title:'Sleep', target: '< 15 hours per day', score: 15, progress: 100),
+                SizedBox(height : 10),
+                Wrap(
+                  children: [
+                    ElevatedButton(
+                      child: Text('Share My \n Achievements', textAlign: TextAlign.center,),
+                      onPressed: () {
+                        Navigator.push(context, MaterialPageRoute(builder: (context) => InvitationScreen()),);
+                        //Navigator.push(context, MaterialPageRoute(builder: (context) => StoreScreen()),);
+                      },
+                    ),
+                    ElevatedButton(
+                      child: (viewOthersAchievement)? Text('View \n Leaderboard', textAlign: TextAlign.center,) : Text('View Others \n Achievements', textAlign: TextAlign.center,),
+                      onPressed: () {
+                        setState(() {
+                          viewOthersAchievement = !viewOthersAchievement;
+                        });
+                      },
+                    ),
+                    // ElevatedButton(
+                    //   child: Text('babyroom'),
+                    //   onPressed: () {
+                    //     Navigator.push(context, MaterialPageRoute(builder: (context) => BabysRoomScreen()),);
+                    //   },
+                    // ),
+                  ],
+                ),
+                SizedBox(height : 10),
+                Divider(height: 5,),
+                // SizedBox(height : 10),
+                // (!viewOthersAchievement)? PerformanceTable()
+                //     :
+                // ValueListenableBuilder(
+                //   valueListenable: motherDataNotifier,
+                //   builder: (context, Motherdata motherdata, child){
+                //     return StreamBuilder<QuerySnapshot>(
+                //         stream: FirebaseFirestore.instance.collection('ShareCollection').where("sharedTo", isEqualTo: motherdata.email)
+                //             .snapshots(),
+                //         builder: (BuildContext context,
+                //             AsyncSnapshot<QuerySnapshot> snapshot) {
+                //           if (snapshot.hasError) {
+                //             return const Text('No shared progress yet');
+                //           }
+                //           if (snapshot.connectionState == ConnectionState.waiting) {
+                //             return const Text('No shared progress yet');
+                //           }
+                //           if (!snapshot.hasData) {
+                //             return const Text('No shared progress yet');
+                //           } else {
+                //             if (snapshot.data!.size > 0) {
+                //               Map<String, dynamic> data = snapshot.data!.docs.first
+                //                   .data() as Map<String, dynamic>;
+                //               //return Text(data["name"], style: TextStyle(color: Colors.black));
+                //               return Wrap(
+                //                 children: snapshot.data!.docs.map((
+                //                     DocumentSnapshot document) {
+                //                   if (document == null)
+                //                     return SizedBox(
+                //                       height: 10,
+                //                     );
+                //                   Map<String, dynamic> data = document.data()! as Map<
+                //                       String,
+                //                       dynamic>;
+                //                   //Timestamp timestamp = data['timestamp'];
+                //                   return ElevatedButton(
+                //                     child: Text('${data['name']}'),
+                //                     onPressed: () {
+                //                     },
+                //                   );
+                //                 }).toList(),
+                //               );
+                //             }
+                //           }
+                //           return const Text('');
+                //         });
+                //   },
+                // ),
+              ],
+            ),
+          );
+        });
+
+
+
+
+
+  }
+
+  Widget _body(){
+    return
+
+      Padding(
       padding: const EdgeInsets.all(16.0),
       child: Column(
         children: [
-          achievementItem(title:'Breastfeeding', target: '< ${leaderBoardNotifier.value.userStatus!.todayBreastFeedingCount} times per day', score: 5, progress: 80, isbreastfeeding: true),
-          achievementItem(title: 'Pumping', target: '< ${leaderBoardNotifier.value.userStatus!.todayPumpingCount} times per day', score:  4, progress: 90, isPumping: true),
-          achievementItem(title: 'Bottling', target: ' < ${leaderBoardNotifier.value.userStatus!.todayBottlingCount} times per day', score: 2, progress: 16),
-          achievementItem(title:'Sleep', target: '< 15 hours per day', score: 15, progress: 100),
-          SizedBox(height : 30),
-          Wrap(
-            children: [
-              ElevatedButton(
-                child: Text('store test'),
-                onPressed: () {
-                  ApiAccess().getLeaderBoard();
-                  //Navigator.push(context, MaterialPageRoute(builder: (context) => StoreScreen()),);
-                },
-              ),
-              ElevatedButton(
-                child: Text('babyroom'),
-                onPressed: () {
-                  Navigator.push(context, MaterialPageRoute(builder: (context) => BabysRoomScreen()),);
-                },
-              ),
-            ],
+          (selectUser)? _othersPersonalAchievements() : _personalAchievements(),
+          SizedBox(height : 10),
+          (!viewOthersAchievement)? PerformanceTable()
+              :
+          ValueListenableBuilder(
+            valueListenable: motherDataNotifier,
+            builder: (context, Motherdata motherdata, child){
+              return StreamBuilder<QuerySnapshot>(
+                  stream: FirebaseFirestore.instance.collection('ShareCollection').where("sharedTo", isEqualTo: motherdata.email)
+                      .snapshots(),
+                  builder: (BuildContext context,
+                      AsyncSnapshot<QuerySnapshot> snapshot) {
+                    if (snapshot.hasError) {
+                      return const Text('No shared progress yet');
+                    }
+                    if (snapshot.connectionState == ConnectionState.waiting) {
+                      return const Text('No shared progress yet');
+                    }
+                    if (!snapshot.hasData) {
+                      return const Text('No shared progress yet');
+                    } else {
+                      if (snapshot.data!.size > 0) {
+                        Map<String, dynamic> data = snapshot.data!.docs.first
+                            .data() as Map<String, dynamic>;
+                        //return Text(data["name"], style: TextStyle(color: Colors.black));
+                        return Wrap(
+                          children: snapshot.data!.docs.map((
+                              DocumentSnapshot document) {
+                            if (document == null)
+                              return SizedBox(
+                                height: 10,
+                              );
+                            Map<String, dynamic> data = document.data()! as Map<
+                                String,
+                                dynamic>;
+                            //Timestamp timestamp = data['timestamp'];
+                            return ElevatedButton(
+                              child: Text('${data['name']}'),
+                              onPressed: () {
+                                setState(() {
+                                  selectUser = !selectUser;
+                                  selectedUser = (selectUser)? data['name']: null;
+                                  leaderboard = ApiAccess().getLeaderBoard(user: data['sharedBy'] );
+                                });
+                              },
+                            );
+                          }).toList(),
+                        );
+                      }
+                    }
+                    return const Text('');
+                  });
+            },
           ),
-          PerformanceTable(),
         ],
       ),
     );
