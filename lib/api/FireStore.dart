@@ -29,6 +29,8 @@ class FireStoreConnect{
       'email': motherdata.email,
       'name': motherdata.name,
       'isPregnant': motherdata.isPregnant,
+      'heightUnit': "cm",
+      'weightUnit': "kg",
       'timestamp': DateTime.now()
     };
 
@@ -148,6 +150,34 @@ class FireStoreConnect{
     };
 
     shareCollection.add(data);
+  }
+
+  void updateHeightUnit({required String heightUnit}) {
+    String? userID = motherDataNotifier.value.email;
+    DocumentReference documentReference =  motherCollection.doc(userID);
+    // Update the specific field using the update method
+    documentReference.update({
+      'heightUnit': heightUnit
+      // You can add more fields to update here if needed
+    }).then((_) {
+      print('Height-Unit updated successfully');
+    }).catchError((error) {
+      print('Error updating field: $error');
+    });
+  }
+
+  void updateWeightUnit({required String weightUnit}) {
+    String? userID = motherDataNotifier.value.email;
+    DocumentReference documentReference =  motherCollection.doc(userID);
+    // Update the specific field using the update method
+    documentReference.update({
+      'weightUnit': weightUnit,
+      // You can add more fields to update here if needed
+    }).then((_) {
+      print('Weight-Unit updated successfully');
+    }).catchError((error) {
+      print('Error updating field: $error');
+    });
   }
 
   Future<void> deleteSharing({required String  sharedBy, required String sharedTo}) async {

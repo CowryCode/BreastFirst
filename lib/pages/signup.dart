@@ -2,6 +2,7 @@ import 'package:breastfirst/api/FireStoreAuthentication.dart';
 import 'package:breastfirst/pages/addbaby_page2.dart';
 import 'package:breastfirst/pages/login-screen.dart';
 import 'package:breastfirst/pages/welcomepage.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
 class RegistrationScreen extends StatefulWidget {
@@ -160,19 +161,25 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
       return false;
     }else{
       bool _ispregant = (_selectedStatus == '0') ? true : false;
-      FireStoreAuthentication().createMotherAccount(
+      Future<UserCredential?> cred =  FireStoreAuthentication().createMotherAccount(
           email: _emailController.text.toString(),
           password: _passwordController.text.toString(),
           name: _nameController.text.toString(),
           pregnancyStatus: _ispregant
       );
-      return true;
+
+      bool result = false;
+      cred.then((value) => {
+        result = value != null
+      });
+     // return true;
+      return result;
     }
   }
 
   void _showSnackBar(BuildContext context) {
     final snackBar = SnackBar(
-      content: const Text('Complete the form and check the agreement'),
+      content: const Text('Either incomplete form or email address is used already.'),
       action: SnackBarAction(
         label: 'Warning',
         onPressed: () {

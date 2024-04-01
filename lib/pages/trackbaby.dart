@@ -1,4 +1,5 @@
 import 'package:breastfirst/pages/components/countdownwidget.dart';
+import 'package:breastfirst/pages/components/musicselector.dart';
 import 'package:breastfirst/pages/musicplayers/lullabypage.dart';
 import 'package:breastfirst/pages/pumping.dart';
 import 'package:breastfirst/pages/pumpingreport.dart';
@@ -47,20 +48,22 @@ class _FeedingsTrackerState extends State<FeedingsTracker> {
                 ),
               ),
               SizedBox(height: 20),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Text('Monday 20th March 2023\n16:41'),
-                  ElevatedButton(onPressed: () {
-                    Navigator.push(context, MaterialPageRoute(builder: (context) => PumpingReportsScreen()),);
-                  }, child: Text('History')),
-                  ElevatedButton(onPressed: () {
-                    Navigator.push(context, MaterialPageRoute(builder: (context) => LullabiesScreen()),);
-                  }, child: Text('Lullaby'))
-                ],
-              ),
-               SizedBox(height: 30),
+              // Row(
+              //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              //   children: [
+              //     // Text('Monday 20th March 2023\n16:41'),
+              //     ElevatedButton(onPressed: () {
+              //       Navigator.push(context, MaterialPageRoute(builder: (context) => PumpingReportsScreen()),);
+              //     }, child: Text('History')),
+              //     ElevatedButton(onPressed: () {
+              //       Navigator.push(context, MaterialPageRoute(builder: (context) => LullabiesScreen()),);
+              //     }, child: Text('Lullaby'))
+              //   ],
+              // ),
               const  Center(child: CountDownWidget()),
+              MusicSelector(),
+
+
               // Row(
               //   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               //   children: [

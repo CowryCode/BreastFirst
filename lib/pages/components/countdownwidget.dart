@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:breastfirst/api/FireStore.dart';
 import 'package:breastfirst/api/network.dart';
+import 'package:breastfirst/pages/components/musicselector.dart';
 import 'package:flutter/material.dart';
 
 class CountDownWidget extends StatefulWidget {
@@ -42,7 +43,7 @@ class _CountDownWidgetState extends State<CountDownWidget> {
           Center(
           child: Text(
             msg,
-            style: TextStyle(fontSize: 20),
+            style: TextStyle(fontSize: 14),
             textAlign: TextAlign.center,
           ),
         ),
@@ -170,7 +171,7 @@ class _CountDownWidgetState extends State<CountDownWidget> {
           },
           child: Text('Done'),
         ),
-        SizedBox(height: 50),
+        Divider(height: 2,),
       ],
     );
   }

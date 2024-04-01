@@ -1,3 +1,4 @@
+import 'package:breastfirst/api/FireStore.dart';
 import 'package:breastfirst/api/model/AWSuserProfile.dart';
 import 'package:breastfirst/api/model/motherdata.dart';
 import 'package:breastfirst/api/network.dart';
@@ -241,8 +242,9 @@ class _MyHomePageState extends State<MyHomePage> {
                     _isCentimeter = value;
                   });
                   String ht = _isCentimeter ? 'cm' : 'inch';
-                  print('Height is : $ht');
-                  measurementUnitNotifier.upDateHeight(heightunit: ht);
+                  //print('Height is : $ht');
+                  //measurementUnitNotifier.upDateHeight(heightunit: ht);
+                  FireStoreConnect().updateHeightUnit(heightUnit: ht);
                 },
                 secondary: _isCentimeter ? Text('cm') : Text('inch'),
               ),
@@ -254,8 +256,8 @@ class _MyHomePageState extends State<MyHomePage> {
                     _isKilogram = value;
                   });
                   String wt = _isKilogram ? 'kg' : 'lb';
-                  measurementUnitNotifier.upDateWeight(weightunit: wt);
-                  print('Height is : $wt');
+                  //measurementUnitNotifier.upDateWeight(weightunit: wt);
+                  FireStoreConnect().updateWeightUnit(weightUnit: wt);
                 },
                 secondary: _isKilogram ? Text('kg') : Text('lb'),
               ),
