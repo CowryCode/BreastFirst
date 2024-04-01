@@ -26,6 +26,7 @@ class _AddBabyPageState extends State<AddBabyPage> {
           icon: Icon(Icons.arrow_back),
           onPressed: () {
             // Handle back button press
+            Navigator.of(context).pop();
           },
         ),
         actions: [Icon(Icons.more_vert)],  // placeholder for the dots in the top right
@@ -49,7 +50,7 @@ class _AddBabyPageState extends State<AddBabyPage> {
                   ValueListenableBuilder(
                     valueListenable: measurementUnitNotifier,
                     builder: (context, MeasurementUnit measurementUnit, child){
-                      String? mstUnit = widget.isSignUp == true ? "" : measurementUnit.heighUnit == null? "(cm)" : "(${measurementUnit.heighUnit})";
+                      String? mstUnit = widget.isSignUp == true ? "(cm)" : measurementUnit.heighUnit == null? "(cm)" : "(${measurementUnit.heighUnit})";
                       return Text(
                        // "Baby's height (${measurementUnit.heighUnit})",
                         "Baby's height $mstUnit",

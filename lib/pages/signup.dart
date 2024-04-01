@@ -1,5 +1,6 @@
 import 'package:breastfirst/api/FireStoreAuthentication.dart';
 import 'package:breastfirst/pages/addbaby_page2.dart';
+import 'package:breastfirst/pages/login-screen.dart';
 import 'package:breastfirst/pages/welcomepage.dart';
 import 'package:flutter/material.dart';
 
@@ -139,6 +140,7 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                 child: InkWell(
                   onTap: () {
                     // Handle navigation to Sign In screen
+                    Navigator.push(context, MaterialPageRoute(builder: (context) => SignInPage()),);
                   },
                   child: Text("Already have an account? Sign in"),
                 ),

@@ -9,4 +9,8 @@ class LeaderBoardNotifier extends ValueNotifier<LeaderBoard> {
     value = leaderBoard;
     notifyListeners();
   }
+
+  void nullify(){
+    value = LeaderBoard();
+  }
 }

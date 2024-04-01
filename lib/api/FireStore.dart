@@ -142,7 +142,8 @@ class FireStoreConnect{
     Map<String, dynamic> data = {
       'sharedBy': token,
       'sharedTo': user,
-      'name': name,
+      'sharerName': motherDataNotifier.value.name,
+      'sharerToName': name,
       'timestamp': DateTime.now()
     };
 

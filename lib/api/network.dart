@@ -77,6 +77,7 @@ class ApiAccess {
     );
 
     if (response.statusCode == 200) {
+      print('${response.body}');
       AWSuserProfile profile = AWSuserProfile.fromJson(jsonDecode(response.body));
       Motherdata mData = Motherdata();
       mData.init(email: profile.userID!, isPregnant: true, name: profile.babyName!);
@@ -244,6 +245,14 @@ class ApiAccess {
 
   Future<void> logout() async {
     Localstorage().removeLoginDetails();
+    ApiAccess().cleanup();
+  }
+
+  Future<void> cleanup() async{
+    // motherDataNotifier.nullify();
+    // babyDataNotifier.nullify();
+    // leaderBoardNotifier.nullify();
+    // measurementUnitNotifier.nullify();
   }
 }
 

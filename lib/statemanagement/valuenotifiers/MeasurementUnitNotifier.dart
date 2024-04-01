@@ -15,4 +15,8 @@ class MeasurementUnitNotifier extends ValueNotifier<MeasurementUnit> {
     print('GOT HERE 2');
     notifyListeners();
   }
+
+  void nullify(){
+    value = MeasurementUnit();
+  }
 }

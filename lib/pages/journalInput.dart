@@ -20,6 +20,7 @@ class _JournalState extends State<Journal> {
           icon: Icon(Icons.arrow_back),
           onPressed: () {
             // Handle back button press
+            Navigator.of(context).pop();
           },
         ),
         actions: [

@@ -1,4 +1,5 @@
 import 'package:breastfirst/api/model/AWSuserProfile.dart';
+import 'package:breastfirst/api/model/motherdata.dart';
 import 'package:breastfirst/api/network.dart';
 import 'package:breastfirst/notification/notification.dart';
 import 'package:breastfirst/pages/achievement.dart';
@@ -76,40 +77,78 @@ class _MyHomePageState extends State<MyHomePage> {
 
   @override
   Widget build(BuildContext context) {
-    String? USERid = motherDataNotifier.value.email;
+   // String? USERid = motherDataNotifier.value.email;
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.white,
         elevation: 0,
         leading: Icon(Icons.person, color: Colors.grey),
         //title: Text("<Baby's name>", style: TextStyle(color: Colors.black)),
-        title: Container(
-          child: StreamBuilder<QuerySnapshot>(
-            stream: FirebaseFirestore.instance.collection('MotherCollection').where("email", isEqualTo: USERid)
-                .snapshots(),
-            builder: (BuildContext context,
-                AsyncSnapshot<QuerySnapshot> snapshot) {
-              if (snapshot.hasError) {
-                return Text('');
-              }
-              if (snapshot.connectionState == ConnectionState.waiting) {
-                return Text('');
-              }
-              if (!snapshot.hasData) {
-                return Text('');
-              } else {
-                if(snapshot.data!.size > 0){
-                  Map<String, dynamic> data = snapshot.data!.docs.first.data() as Map<String, dynamic>;
-                  return Text(data["name"], style: TextStyle(color: Colors.black));
-                }else{
-                  return Text("");
-                }
+        title:
+        ValueListenableBuilder(
+          valueListenable: motherDataNotifier,
+          builder: (context, Motherdata motherdata, child){
+            return Container(
+              child: StreamBuilder<QuerySnapshot>(
+               // stream: FirebaseFirestore.instance.collection('MotherCollection').where("email", isEqualTo: USERid)
+                stream: FirebaseFirestore.instance.collection('MotherCollection').where("email", isEqualTo: motherdata.email)
+                    .snapshots(),
+                builder: (BuildContext context,
+                    AsyncSnapshot<QuerySnapshot> snapshot) {
+                  if (snapshot.hasError) {
+                    return Text('');
+                  }
+                  if (snapshot.connectionState == ConnectionState.waiting) {
+                    return Text('');
+                  }
+                  if (!snapshot.hasData) {
+                    return Text('');
+                  } else {
+                    if(snapshot.data!.size > 0){
+                      Map<String, dynamic> data = snapshot.data!.docs.first.data() as Map<String, dynamic>;
+                      return Text(data["name"], style: TextStyle(color: Colors.black));
+                    }else{
+                      return Text("");
+                    }
 
-              }
+                  }
 
-            },
-          ),
+                },
+              ),
+            );
+          },
+
         ),
+        //
+
+
+        // Container(
+        //   child: StreamBuilder<QuerySnapshot>(
+        //     stream: FirebaseFirestore.instance.collection('MotherCollection').where("email", isEqualTo: USERid)
+        //         .snapshots(),
+        //     builder: (BuildContext context,
+        //         AsyncSnapshot<QuerySnapshot> snapshot) {
+        //       if (snapshot.hasError) {
+        //         return Text('');
+        //       }
+        //       if (snapshot.connectionState == ConnectionState.waiting) {
+        //         return Text('');
+        //       }
+        //       if (!snapshot.hasData) {
+        //         return Text('');
+        //       } else {
+        //         if(snapshot.data!.size > 0){
+        //           Map<String, dynamic> data = snapshot.data!.docs.first.data() as Map<String, dynamic>;
+        //           return Text(data["name"], style: TextStyle(color: Colors.black));
+        //         }else{
+        //           return Text("");
+        //         }
+        //
+        //       }
+        //
+        //     },
+        //   ),
+        // ),
         actions: [
           Icon(Icons.equalizer, color: Colors.purple),
         ],
@@ -233,7 +272,7 @@ class _MyHomePageState extends State<MyHomePage> {
               _buildListTile('Journal', pageID: 3),
               _buildListTile('Background color', pageID: 4),
               _buildListTile('Share with family/friend', pageID: 5),
-              _buildListTile('Help & support', pageID: 6),
+              // _buildListTile('Help & support', pageID: 6),
               _buildListTile('Send feedback', pageID: 7),
               ListTile(title: Text('App version 1.0')),
               ElevatedButton(
@@ -357,7 +396,7 @@ class _MyHomePageState extends State<MyHomePage> {
         }else if(pageID == 5){
           Navigator.push(context, MaterialPageRoute(builder: (context) => InvitationScreen()),);
         }else if(pageID == 6){
-          Navigator.push(context, MaterialPageRoute(builder: (context) => ContactUs()),);
+          //Navigator.push(context, MaterialPageRoute(builder: (context) => ContactUs()),);
         }else if(pageID == 7){
           Navigator.push(context, MaterialPageRoute(builder: (context) => ContactUs()),);
         }

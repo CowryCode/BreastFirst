@@ -8,4 +8,8 @@ class BabyDataNotifier extends ValueNotifier<BabyData> {
     value = babydata;
     notifyListeners();
   }
+
+  void nullify(){
+    value = BabyData();
+  }
 }

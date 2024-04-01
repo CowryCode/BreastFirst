@@ -34,7 +34,7 @@ class _InvitationScreenState extends State<InvitationScreen> {
             onPressed: () {
               // Handle done button press
             },
-            child: Text("Done"),
+            child: Text(""),
           ),
         ],
       ),
@@ -52,7 +52,7 @@ class _InvitationScreenState extends State<InvitationScreen> {
               TextField(
                 controller: _nameController,
                 decoration: InputDecoration(
-                  hintText: "Who are you sharing with?",
+                  hintText: "Name",
                   filled: true,
                   fillColor: Colors.purple[50],
                 ),
@@ -62,7 +62,7 @@ class _InvitationScreenState extends State<InvitationScreen> {
               TextField(
                 controller: _emailController,
                 decoration: InputDecoration(
-                  hintText: "Abc@mail.com",
+                  hintText: "Email",
                   filled: true,
                   fillColor: Colors.purple[50],
                 ),
@@ -123,9 +123,9 @@ class _InvitationScreenState extends State<InvitationScreen> {
                                   dynamic>;
                               //Timestamp timestamp = data['timestamp'];
                               return ElevatedButton(
-                                child: Text('${data['name']}'),
+                                child: Text('${data['sharerToName']}'),
                                 onPressed: () {
-                                  _confirmDelete(name: '${data['name']}', sharedBy: '${data['sharedBy']}', sharedTo: '${data['sharedTo']}');
+                                  _confirmDelete(name: '${data['sharerToName']}', sharedBy: '${data['sharedBy']}', sharedTo: '${data['sharedTo']}');
                                   // Navigator.push(
                                   //   context,
                                   //   MaterialPageRoute(

@@ -61,14 +61,14 @@ class _FeedingsTrackerState extends State<FeedingsTracker> {
               ),
                SizedBox(height: 30),
               const  Center(child: CountDownWidget()),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                children: [
-                  Icon(Icons.home, size: 30),
-                  Icon(Icons.music_note, size: 30),
-                  Icon(Icons.settings, size: 30),
-                ],
-              )
+              // Row(
+              //   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              //   children: [
+              //     Icon(Icons.home, size: 30),
+              //     Icon(Icons.music_note, size: 30),
+              //     Icon(Icons.settings, size: 30),
+              //   ],
+              // )
             ],
           ),
         ),

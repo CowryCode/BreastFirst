@@ -66,6 +66,9 @@ class _PerformanceTableState extends State<PerformanceTable> {
             //  (dataType == 0)? Center(child: Text("Brest Feeding")) :
             //  (dataType == 1)? Center(child: Text("Bottling")) : Center(child: Text("Pumping")),
             child:
+            (dataType == 0 && leaderBoardNotifier.value.breastFeedingRanking == null) ? Text("") :
+            (dataType == 1 && leaderBoardNotifier.value.bottlingRanking == null) ? Text("") :
+            (leaderBoardNotifier.value.pumpingRanking == null) ? Text("") :
             (dataType == 0)? Center(child: getBreastFeeding(breastFeedingRanking: leaderBoardNotifier.value.breastFeedingRanking!)) :
             (dataType == 1)? Center(child: getBottling(bottlingRanking: leaderBoardNotifier.value.bottlingRanking!)) : 
             Center(child: getPumping(pumpingRanking: leaderBoardNotifier.value.pumpingRanking!)),

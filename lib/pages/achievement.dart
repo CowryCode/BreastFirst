@@ -44,7 +44,24 @@ class _AchievementsScreenState extends State<AchievementsScreen> {
         ],
       ),
       body: SingleChildScrollView(
-        child:  _body(),
+        child: FutureBuilder<LeaderBoard>(
+          future: leaderboard,
+          builder: (BuildContext context, AsyncSnapshot<LeaderBoard> snapshot) {
+            switch (snapshot.connectionState) {
+              case ConnectionState.none:
+                return Text('Press button to start.');
+              case ConnectionState.active:
+              case ConnectionState.waiting:
+                return CircularProgressIndicator();
+              case ConnectionState.done:
+                if (snapshot.hasError)
+                  return Center(child: Text('No data yet!'));
+                return _body();
+            }
+          },
+        )
+
+        //_body(),
        )
     );
   }
@@ -68,10 +85,14 @@ class _AchievementsScreenState extends State<AchievementsScreen> {
             padding: const EdgeInsets.all(16.0),
             child: Column(
               children: [
-                achievementItem(title:'Breastfeeding', target: '< ${leaderboard!.userStatus!.todayBreastFeedingCount} times per day', score: 5, progress: 80, isbreastfeeding: true),
-                achievementItem(title: 'Pumping', target: '< ${leaderboard.userStatus!.todayPumpingCount} times per day', score:  4, progress: 90, isPumping: true),
-                achievementItem(title: 'Bottling', target: ' < ${leaderboard.userStatus!.todayBottlingCount} times per day', score: 2, progress: 16),
-                achievementItem(title:'Sleep', target: '< 15 hours per day', score: 15, progress: 100),
+                // achievementItem(title:'Breastfeeding', target: '< ${leaderboard!.userStatus!.todayBreastFeedingCount} daily Avg', score: 5, progress: 80, isbreastfeeding: true),
+                // achievementItem(title: 'Pumping', target: '< ${leaderboard.userStatus!.todayPumpingCount} daily Avg', score:  4, progress: 90, isPumping: true),
+                // achievementItem(title: 'Bottling', target: ' < ${leaderboard.userStatus!.todayBottlingCount} daily Avg', score: 2, progress: 16),
+                // achievementItem(title:'Sleep', target: '< 15 hours per day', score: 15, progress: 100),
+                achievementItem(title:'Breastfeeding: (${leaderboard!.userStatus!.todayBreastFeedingCount})', target: 10, score: leaderboard.userStatus!.todayBreastFeedingCount!, progress: 0, isbreastfeeding: true),
+                achievementItem(title: 'Pumping: (${leaderboard.userStatus!.todayPumpingCount})', target: 10, score:  leaderboard.userStatus!.todayPumpingCount!, progress: 0, isPumping: true),
+                achievementItem(title: 'Bottling: (${leaderboard.userStatus!.todayBottlingCount})', target: 10, score: leaderboard.userStatus!.todayBottlingCount!, progress: 0),
+                achievementItem(title:'Sleep (0)', target: 10, score: 0, progress: 0),
                 SizedBox(height : 10),
                 Wrap(
                   children: [
@@ -90,12 +111,6 @@ class _AchievementsScreenState extends State<AchievementsScreen> {
                         });
                       },
                     ),
-                    // ElevatedButton(
-                    //   child: Text('babyroom'),
-                    //   onPressed: () {
-                    //     Navigator.push(context, MaterialPageRoute(builder: (context) => BabysRoomScreen()),);
-                    //   },
-                    // ),
                   ],
                 ),
                 SizedBox(height : 10),
@@ -148,8 +163,6 @@ class _AchievementsScreenState extends State<AchievementsScreen> {
                 //         });
                 //   },
                 // ),
-
-
               ],
             ),
           );
@@ -165,12 +178,16 @@ class _AchievementsScreenState extends State<AchievementsScreen> {
         builder: (context, LeaderBoard leaderboard, child){
           return Padding(
             padding: const EdgeInsets.all(16.0),
-            child: Column(
+            child:Column(
               children: [
-                achievementItem(title:'Breastfeeding', target: '< ${leaderboard.userStatus!.todayBreastFeedingCount} times per day', score: 5, progress: 80, isbreastfeeding: true),
-                achievementItem(title: 'Pumping', target: '< ${leaderboard.userStatus!.todayPumpingCount} times per day', score:  4, progress: 90, isPumping: true),
-                achievementItem(title: 'Bottling', target: ' < ${leaderboard.userStatus!.todayBottlingCount} times per day', score: 2, progress: 16),
-                achievementItem(title:'Sleep', target: '< 15 hours per day', score: 15, progress: 100),
+                // achievementItem(title:'Breastfeeding:', target: '< ${leaderboard.userStatus!.todayBreastFeedingCount} times per day', score: 5, progress: 80, isbreastfeeding: true),
+                // achievementItem(title: 'Pumping: ', target: '< ${leaderboard.userStatus!.todayPumpingCount} times per day', score:  4, progress: 90, isPumping: true),
+                // achievementItem(title: 'Bottling: ', target: ' < ${leaderboard.userStatus!.todayBottlingCount} times per day', score: 2, progress: 16),
+                // achievementItem(title:'Sleep: ', target: '< 15 hours per day', score: 15, progress: 100),
+                achievementItem(title:'Breastfeeding: (${leaderboard.userStatus!.todayBreastFeedingCount})', target: 10, score: leaderboard.userStatus!.todayBreastFeedingCount!, progress: 0, isbreastfeeding: true),
+                achievementItem(title: 'Pumping: (${leaderboard.userStatus!.todayPumpingCount})', target: 10, score: leaderboard.userStatus!.todayPumpingCount!, progress: 0, isPumping: true),
+                achievementItem(title: 'Bottling: (${leaderboard.userStatus!.todayBottlingCount})', target: 10, score: leaderboard.userStatus!.todayBottlingCount!, progress: 0),
+                achievementItem(title:'Sleep: (0)', target: 10, score: 0, progress: 0),
                 SizedBox(height : 10),
                 Wrap(
                   children: [
@@ -259,9 +276,7 @@ class _AchievementsScreenState extends State<AchievementsScreen> {
   }
 
   Widget _body(){
-    return
-
-      Padding(
+    return Padding(
       padding: const EdgeInsets.all(16.0),
       child: Column(
         children: [
@@ -302,11 +317,11 @@ class _AchievementsScreenState extends State<AchievementsScreen> {
                                 dynamic>;
                             //Timestamp timestamp = data['timestamp'];
                             return ElevatedButton(
-                              child: Text('${data['name']}'),
+                              child: Text('${data['sharerName']}'),
                               onPressed: () {
                                 setState(() {
                                   selectUser = !selectUser;
-                                  selectedUser = (selectUser)? data['name']: null;
+                                  selectedUser = (selectUser)? data['sharerName']: null;
                                   leaderboard = ApiAccess().getLeaderBoard(user: data['sharedBy'] );
                                 });
                               },
@@ -315,7 +330,7 @@ class _AchievementsScreenState extends State<AchievementsScreen> {
                         );
                       }
                     }
-                    return const Text('');
+                    return const Text('Nobody has shared result with you yet.');
                   });
             },
           ),
@@ -324,98 +339,99 @@ class _AchievementsScreenState extends State<AchievementsScreen> {
     );
   }
 
-  Widget achievementItem({required String title, required String target, required int score, required double progress, bool isPumping = false, bool isbreastfeeding = false, bool isbottling = false,}) {
+  Widget achievementItem({required String title, required int target, required int score, required double progress, bool isPumping = false, bool isbreastfeeding = false, bool isbottling = false,}) {
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 10.0),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
           Text(title),
-          Text(target),
-          Text('$score'),
+         // Text(target),
+         // Text('$score'),
           Container(
             width: 100,
             child: LinearProgressIndicator(
-              value: progress / 100,
+             // value: progress / 100,
+              value: (score == 0) ? 0 : ((score/target) * 100 )/100,
               backgroundColor: Colors.grey[300],
               valueColor: AlwaysStoppedAnimation<Color>(Colors.purple[300]!),
             ),
           ),
-          Text('$progress%')
+          Text('${(score/target) * 100 }%')
         ],
       ),
     );
 
-    String dataType = (isPumping == true) ? FireStoreConnect().pumpingCollection : (isbreastfeeding == true) ?  FireStoreConnect().bottlingcollection : FireStoreConnect().breastCollection;
-
-    return StreamBuilder<QuerySnapshot>(
-      stream: FirebaseFirestore.instance.collection("BreastFeedingData").doc(
-          motherDataNotifier.value.email).collection(
-          dataType).snapshots(),
-
-      // stream: FirebaseFirestore.instance.collection("BreastFeedingData").snapshots(),
-      builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
-
-       // FireStoreConnect().getbreastData(snapshot as QuerySnapshot<Map<String, dynamic>>);
-        if (snapshot.hasError) {
-          return Text('Something went wrong');
-        }
-
-        if (snapshot.connectionState == ConnectionState.waiting) {
-          return Text("Loading");
-        }
-
-        if (!snapshot.hasData) {
-          return CircularProgressIndicator();
-        }
-
-        // print('${snapshot.data!.docs.length} DOCUMENTS Returned');
-        print('All Docs : ${snapshot.data!.docs.length}');
-        List<QueryDocumentSnapshot<Object?>> allDocs = snapshot.data!.docs;
-        print('Number of items for dataType :  ${allDocs.length}');
-
-        return Padding(
-          padding: const EdgeInsets.symmetric(vertical: 10.0),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Text(title),
-              Text(target),
-              Text('$score'),
-              Container(
-                width: 100,
-                child: LinearProgressIndicator(
-                  value: progress / 100,
-                  backgroundColor: Colors.grey[300],
-                  valueColor: AlwaysStoppedAnimation<Color>(Colors.purple[300]!),
-                ),
-              ),
-              Text('$progress%')
-            ],
-          ),
-        );
-      },
-    );
-
-    return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 10.0),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [
-          Text(title),
-          Text(target),
-          Text('$score'),
-          Container(
-            width: 100,
-            child: LinearProgressIndicator(
-              value: progress / 100,
-              backgroundColor: Colors.grey[300],
-              valueColor: AlwaysStoppedAnimation<Color>(Colors.purple[300]!),
-            ),
-          ),
-          Text('$progress%')
-        ],
-      ),
-    );
+    // String dataType = (isPumping == true) ? FireStoreConnect().pumpingCollection : (isbreastfeeding == true) ?  FireStoreConnect().bottlingcollection : FireStoreConnect().breastCollection;
+    //
+    // return StreamBuilder<QuerySnapshot>(
+    //   stream: FirebaseFirestore.instance.collection("BreastFeedingData").doc(
+    //       motherDataNotifier.value.email).collection(
+    //       dataType).snapshots(),
+    //
+    //   // stream: FirebaseFirestore.instance.collection("BreastFeedingData").snapshots(),
+    //   builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
+    //
+    //    // FireStoreConnect().getbreastData(snapshot as QuerySnapshot<Map<String, dynamic>>);
+    //     if (snapshot.hasError) {
+    //       return Text('Something went wrong');
+    //     }
+    //
+    //     if (snapshot.connectionState == ConnectionState.waiting) {
+    //       return Text("Loading");
+    //     }
+    //
+    //     if (!snapshot.hasData) {
+    //       return CircularProgressIndicator();
+    //     }
+    //
+    //     // print('${snapshot.data!.docs.length} DOCUMENTS Returned');
+    //     print('All Docs : ${snapshot.data!.docs.length}');
+    //     List<QueryDocumentSnapshot<Object?>> allDocs = snapshot.data!.docs;
+    //     print('Number of items for dataType :  ${allDocs.length}');
+    //
+    //     return Padding(
+    //       padding: const EdgeInsets.symmetric(vertical: 10.0),
+    //       child: Row(
+    //         mainAxisAlignment: MainAxisAlignment.spaceBetween,
+    //         children: [
+    //           Text(title),
+    //           Text(target),
+    //           Text('$score'),
+    //           Container(
+    //             width: 100,
+    //             child: LinearProgressIndicator(
+    //               value: progress / 100,
+    //               backgroundColor: Colors.grey[300],
+    //               valueColor: AlwaysStoppedAnimation<Color>(Colors.purple[300]!),
+    //             ),
+    //           ),
+    //           Text('$progress%')
+    //         ],
+    //       ),
+    //     );
+    //   },
+    // );
+    //
+    // return Padding(
+    //   padding: const EdgeInsets.symmetric(vertical: 10.0),
+    //   child: Row(
+    //     mainAxisAlignment: MainAxisAlignment.spaceBetween,
+    //     children: [
+    //       Text(title),
+    //       Text(target),
+    //       Text('$score'),
+    //       Container(
+    //         width: 100,
+    //         child: LinearProgressIndicator(
+    //           value: progress / 100,
+    //           backgroundColor: Colors.grey[300],
+    //           valueColor: AlwaysStoppedAnimation<Color>(Colors.purple[300]!),
+    //         ),
+    //       ),
+    //       Text('$progress%')
+    //     ],
+    //   ),
+    // );
   }
 }

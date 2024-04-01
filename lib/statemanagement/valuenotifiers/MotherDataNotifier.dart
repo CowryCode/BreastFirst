@@ -14,4 +14,8 @@ class MotherDataNotifier extends ValueNotifier<Motherdata> {
     notifyListeners();
   }
 
+  void nullify(){
+    value = Motherdata();
+  }
+
 }

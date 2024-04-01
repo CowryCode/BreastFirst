@@ -24,6 +24,7 @@ class _AddBabyDetailsPageState extends State<AddBabyDetailsPage> {
           icon: Icon(Icons.arrow_back),
           onPressed: () {
             // Handle back button press
+            Navigator.of(context).pop();
           },
         ),
         actions: [Icon(Icons.more_vert)],  // placeholder for the dots in the top right

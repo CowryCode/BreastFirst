@@ -1,5 +1,6 @@
 
 import 'package:breastfirst/api/FireStoreAuthentication.dart';
+import 'package:breastfirst/api/network.dart';
 import 'package:breastfirst/pages/homepage.dart';
 import 'package:breastfirst/pages/signup.dart';
 import 'package:breastfirst/pages/welcomepage.dart';
@@ -20,6 +21,12 @@ class _SignInPageState extends State<SignInPage> {
       backgroundColor: Colors.white,
       body: content(),
     );
+  }
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
   }
 
   Widget content(){

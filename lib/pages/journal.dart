@@ -35,7 +35,7 @@ class _JournalScreenState extends State<JournalScreen> {
           IconButton(
             icon: Icon(Icons.more_vert),
             onPressed: () {
-
+              Navigator.of(context).pop();
             },
           ),
         ],
