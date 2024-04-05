@@ -177,9 +177,6 @@ class _CountDownWidgetState extends State<CountDownWidget> {
   }
 
   void selectedBreast({required bool isLeft}) {
-    print('Pressed Left Button: $isLeft');
-    print('LEFT Breast Active: $leftBreastActive');
-    print('RIGHT Breast Active: $rightBreastActive');
 
     if(isLeft == true){
       if(leftBreastActive == true){

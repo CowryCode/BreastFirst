@@ -29,126 +29,130 @@ class _AddBabyDetailsPageState extends State<AddBabyDetailsPage> {
         ),
         actions: [Icon(Icons.more_vert)],  // placeholder for the dots in the top right
       ),
-      body: Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.center,
-          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-          children: [
-            Text(
-              "Let's add your baby!",
-              style: TextStyle(
-                fontSize: 20,
-                fontWeight: FontWeight.bold,
-              ),
+      body:  _body()
+    );
+  }
+
+  Widget _body(){
+    return Padding(
+      padding: const EdgeInsets.all(16.0),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.center,
+        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+        children: [
+          Text(
+            "Let's add your baby!",
+            style: TextStyle(
+              fontSize: 20,
+              fontWeight: FontWeight.bold,
             ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceAround,
-              children: [
-                InkWell(
-                    onTap: () {
-                      print('Button tapped!');
-                      babyData.setGender(gender: "Girl");
-                    },
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: <Widget>[
-                        Icon(Icons.star, color: Colors.pink, size: 100),
-                        SizedBox(width: 2),  // Add some spacing between the icon and the text
-                        Text('Girl'),
-                      ],
-                    ),
-                  ),
-                Text('or'),
-                InkWell(
-                  onTap: () {
-                    print('Button tapped!');
-                    babyData.setGender(gender: "Boy");
+          ),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceAround,
+            children: [
+              InkWell(
+                onTap: () {
+                  print('Button tapped!');
+                  babyData.setGender(gender: "Girl");
+                },
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: <Widget>[
+                    Icon(Icons.star, color: Colors.pink, size: 100),
+                    SizedBox(width: 2),  // Add some spacing between the icon and the text
+                    Text('Girl'),
+                  ],
+                ),
+              ),
+              Text('or'),
+              InkWell(
+                onTap: () {
+                  print('Button tapped!');
+                  babyData.setGender(gender: "Boy");
+                },
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: <Widget>[
+                    Icon(Icons.star, color: Colors.blue, size: 100),
+                    SizedBox(width: 2),  // Add some spacing between the icon and the text
+                    Text('Boy'),
+                  ],
+                ),
+              ),
+            ],
+          ),
+          TextField(
+            controller: _nameController,
+            decoration: InputDecoration(
+              labelText: "Baby's name",
+              border: OutlineInputBorder(),
+            ),
+          ),
+          Row(
+            children: [
+              Expanded(
+                child: InkWell(
+                  onTap: () async {
+                    DateTime? date = await showDatePicker(
+                      context: context,
+                      initialDate: DateTime.now(),
+                      firstDate: DateTime(2000),
+                      lastDate: DateTime.now(),
+                    );
+                    if (date != null) {
+                      setState(() {
+                        selectedDate = date;
+                      });
+                    }
                   },
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: <Widget>[
-                      Icon(Icons.star, color: Colors.blue, size: 100),
-                      SizedBox(width: 2),  // Add some spacing between the icon and the text
-                      Text('Boy'),
-                    ],
+                  child: Container(
+                    padding: EdgeInsets.all(12),
+                    decoration: BoxDecoration(
+                      border: Border.all(color: Colors.grey),
+                      borderRadius: BorderRadius.circular(4),
+                    ),
+                    child: Text(selectedDate == null ? 'Date' : selectedDate.toLocal().toString().split(' ')[0]),
                   ),
                 ),
-              ],
-            ),
-            TextField(
-              controller: _nameController,
-              decoration: InputDecoration(
-                labelText: "Baby's name",
-                border: OutlineInputBorder(),
               ),
-            ),
-            Row(
-              children: [
-                Expanded(
-                  child: InkWell(
-                    onTap: () async {
-                      DateTime? date = await showDatePicker(
-                        context: context,
-                        initialDate: DateTime.now(),
-                        firstDate: DateTime(2000),
-                        lastDate: DateTime.now(),
-                      );
-                      if (date != null) {
-                        setState(() {
-                          selectedDate = date;
-                        });
-                      }
-                    },
-                    child: Container(
-                      padding: EdgeInsets.all(12),
-                      decoration: BoxDecoration(
-                        border: Border.all(color: Colors.grey),
-                        borderRadius: BorderRadius.circular(4),
-                      ),
-                      child: Text(selectedDate == null ? 'Date' : selectedDate.toLocal().toString().split(' ')[0]),
+              SizedBox(width: 8),
+              Expanded(
+                child: InkWell(
+                  onTap: () async {
+                    TimeOfDay? time = await showTimePicker(
+                      context: context,
+                      initialTime: TimeOfDay.now(),
+                    );
+                    if (time != null) {
+                      setState(() {
+                        selectedTime = time;
+                      });
+                    }
+                  },
+                  child: Container(
+                    padding: EdgeInsets.all(12),
+                    decoration: BoxDecoration(
+                      border: Border.all(color: Colors.grey),
+                      borderRadius: BorderRadius.circular(4),
                     ),
+                    child: Text(selectedTime == null ? 'Time' : selectedTime.format(context)),
                   ),
                 ),
-                SizedBox(width: 8),
-                Expanded(
-                  child: InkWell(
-                    onTap: () async {
-                      TimeOfDay? time = await showTimePicker(
-                        context: context,
-                        initialTime: TimeOfDay.now(),
-                      );
-                      if (time != null) {
-                        setState(() {
-                          selectedTime = time;
-                        });
-                      }
-                    },
-                    child: Container(
-                      padding: EdgeInsets.all(12),
-                      decoration: BoxDecoration(
-                        border: Border.all(color: Colors.grey),
-                        borderRadius: BorderRadius.circular(4),
-                      ),
-                      child: Text(selectedTime == null ? 'Time' : selectedTime.format(context)),
-                    ),
-                  ),
-                ),
-              ],
-            ),
-            ElevatedButton(
-              onPressed: () {
-                // Handle continue button press
-                if(_submitAction() == true){
-                   Navigator.push(context, MaterialPageRoute(builder: (context) => AddBabyPage(isSignUp: true,)),);
-                }else{
-                  _showSnackBar(context);
-                }
-              },
-              child: Text('Continue'),
-            ),
-          ],
-        ),
+              ),
+            ],
+          ),
+          ElevatedButton(
+            onPressed: () {
+              // Handle continue button press
+              if(_submitAction() == true){
+                Navigator.push(context, MaterialPageRoute(builder: (context) => AddBabyPage(isSignUp: true,)),);
+              }else{
+                _showSnackBar(context);
+              }
+            },
+            child: Text('Continue'),
+          ),
+        ],
       ),
     );
   }

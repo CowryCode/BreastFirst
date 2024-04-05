@@ -91,7 +91,7 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                     child: ListTile(
                       title: const Text('Breastfeeding'),
                       leading: Radio<String>(
-                       // value: 'Breastfeeding',
+                        // value: 'Breastfeeding',
                         value: '1',
                         groupValue: _selectedStatus,
                         onChanged: (value) {
@@ -122,17 +122,44 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
               ElevatedButton(
                 onPressed: () {
                   // Handle registration logic here
-                  String sel = (_selectedStatus == '0') ? "Pregnant Selected" : "Breastfeading selected" ;
+                  String sel = (_selectedStatus == '0')
+                      ? "Pregnant Selected"
+                      : "Breastfeading selected";
+                  CircularProgressIndicator();
+                  _submitAction().then((value) => {
+                        if (value == true)
+                          {
+                            if (_selectedStatus == '0')
+                              {
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) => WelcomePage()),
+                                )
+                              }
+                            else
+                              {
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) =>
+                                          AddBabyDetailsPage()),
+                                )
+                              }
+                          }
+                        else
+                          {_showSnackBar(context)}
+                      });
 
-                  if(_submitAction() == true){
-                    if(_selectedStatus == '0'){
-                      Navigator.push(context, MaterialPageRoute(builder: (context) => WelcomePage()),);
-                    }else{
-                      Navigator.push(context, MaterialPageRoute(builder: (context) => AddBabyDetailsPage()),);
-                    }
-                  }else {
-                    _showSnackBar(context);
-                  }
+                  // if(_submitAction() == true){
+                  //   if(_selectedStatus == '0'){
+                  //     Navigator.push(context, MaterialPageRoute(builder: (context) => WelcomePage()),);
+                  //   }else{
+                  //     Navigator.push(context, MaterialPageRoute(builder: (context) => AddBabyDetailsPage()),);
+                  //   }
+                  // }else {
+                  //   _showSnackBar(context);
+                  // }
                 },
                 child: Text("CREATE ACCOUNT"),
               ),
@@ -141,7 +168,10 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                 child: InkWell(
                   onTap: () {
                     // Handle navigation to Sign In screen
-                    Navigator.push(context, MaterialPageRoute(builder: (context) => SignInPage()),);
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (context) => SignInPage()),
+                    );
                   },
                   child: Text("Already have an account? Sign in"),
                 ),
@@ -153,33 +183,42 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
     );
   }
 
-  bool _submitAction(){
-    if(_nameController.text.isEmpty ||
+  Future<bool> _submitAction() async {
+    if (_nameController.text.isEmpty ||
         _emailController.text.isEmpty ||
         _passwordController.text.isEmpty ||
-        _isAgreedToTnC == false || _selectedStatus == null){
+        _isAgreedToTnC == false ||
+        _selectedStatus == null) {
       return false;
-    }else{
+    } else {
       bool _ispregant = (_selectedStatus == '0') ? true : false;
-      Future<UserCredential?> cred =  FireStoreAuthentication().createMotherAccount(
-          email: _emailController.text.toString(),
-          password: _passwordController.text.toString(),
-          name: _nameController.text.toString(),
-          pregnancyStatus: _ispregant
-      );
+      UserCredential? cred = await FireStoreAuthentication()
+          .createMotherAccount(
+              email: _emailController.text.toString(),
+              password: _passwordController.text.toString(),
+              name: _nameController.text.toString(),
+              pregnancyStatus: _ispregant);
 
-      bool result = false;
-      cred.then((value) => {
-        result = value != null
-      });
-     // return true;
-      return result;
+      // Future<UserCredential?> cred =  FireStoreAuthentication().createMotherAccount(
+      //     email: _emailController.text.toString(),
+      //     password: _passwordController.text.toString(),
+      //     name: _nameController.text.toString(),
+      //     pregnancyStatus: _ispregant
+      // );
+      // bool result = false;
+      // cred.then((value) => {
+      //   result = value != null
+      // });
+      // return result;
+
+      return cred != null;
     }
   }
 
   void _showSnackBar(BuildContext context) {
     final snackBar = SnackBar(
-      content: const Text('Either incomplete form or email address is used already.'),
+      content: const Text(
+          'Either incomplete form or email address is used already.'),
       action: SnackBarAction(
         label: 'Warning',
         onPressed: () {

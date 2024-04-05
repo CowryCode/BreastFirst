@@ -18,8 +18,8 @@ class FireStoreAuthentication {
       );
       Motherdata mData = Motherdata();
       mData.init(email: email, isPregnant: pregnancyStatus, name: name);
-      FireStoreConnect().saveMotherData(motherdata: mData);
-      ApiAccess().creatUserProfile(email: email, name: name);
+      await FireStoreConnect().saveMotherData(motherdata: mData);
+      await ApiAccess().creatUserProfile(email: email, name: name);
       return credential;
     } on FirebaseAuthException catch (e) {
       if (e.code == 'weak-password') {
