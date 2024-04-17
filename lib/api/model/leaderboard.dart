@@ -117,6 +117,7 @@ class FeedingData {
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
     data['userID'] = userID;
+    data['userName'] = userID;
     data['date'] = date;
     data['breastFeedingCount'] = breastFeedingCount;
     data['pumpingCount'] = pumpingCount;
@@ -127,18 +128,21 @@ class FeedingData {
 
 class BreastFeedingRanking {
   String? userID;
+  String? userName;
   int? breastAvgFeedingRank;
   int? bottlingAvgRank;
   int? pumpingAvgRank;
 
   BreastFeedingRanking(
       {this.userID,
+       this.userName,
         this.breastAvgFeedingRank,
         this.bottlingAvgRank,
         this.pumpingAvgRank});
 
   BreastFeedingRanking.fromJson(Map<String, dynamic> json) {
     userID = json['userID'];
+    userName = json['userName'];
     breastAvgFeedingRank = json['breastAvgFeedingRank'];
     bottlingAvgRank = json['bottlingAvgRank'];
     pumpingAvgRank = json['pumpingAvgRank'];
@@ -147,6 +151,7 @@ class BreastFeedingRanking {
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
     data['userID'] = this.userID;
+    data['userName'] = this.userName;
     data['breastAvgFeedingRank'] = this.breastAvgFeedingRank;
     data['bottlingAvgRank'] = this.bottlingAvgRank;
     data['pumpingAvgRank'] = this.pumpingAvgRank;
@@ -156,18 +161,21 @@ class BreastFeedingRanking {
 
 class BottlingRanking {
   String? userID;
+  String? userName;
   int? breastAvgFeedingRank;
   int? bottlingAvgRank;
   int? pumpingAvgRank;
 
   BottlingRanking(
       {this.userID,
+        this.userName,
         this.breastAvgFeedingRank,
         this.bottlingAvgRank,
         this.pumpingAvgRank});
 
   BottlingRanking.fromJson(Map<String, dynamic> json) {
     userID = json['userID'];
+    userName = json['userName'];
     breastAvgFeedingRank = json['breastAvgFeedingRank'];
     bottlingAvgRank = json['bottlingAvgRank'];
     pumpingAvgRank = json['pumpingAvgRank'];
@@ -176,6 +184,7 @@ class BottlingRanking {
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
     data['userID'] = this.userID;
+    data['userName'] = this.userName;
     data['breastAvgFeedingRank'] = this.breastAvgFeedingRank;
     data['bottlingAvgRank'] = this.bottlingAvgRank;
     data['pumpingAvgRank'] = this.pumpingAvgRank;
@@ -185,18 +194,21 @@ class BottlingRanking {
 
 class PumpingRanking {
   String? userID;
+  String? userName;
   int? breastAvgFeedingRank;
   int? bottlingAvgRank;
   int? pumpingAvgRank;
 
   PumpingRanking(
       {this.userID,
+        this.userName,
         this.breastAvgFeedingRank,
         this.bottlingAvgRank,
         this.pumpingAvgRank});
 
   PumpingRanking.fromJson(Map<String, dynamic> json) {
     userID = json['userID'];
+    userName = json['userName'];
     breastAvgFeedingRank = json['breastAvgFeedingRank'];
     bottlingAvgRank = json['bottlingAvgRank'];
     pumpingAvgRank = json['pumpingAvgRank'];
@@ -205,6 +217,7 @@ class PumpingRanking {
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
     data['userID'] = this.userID;
+    data['userName'] = this.userName;
     data['breastAvgFeedingRank'] = this.breastAvgFeedingRank;
     data['bottlingAvgRank'] = this.bottlingAvgRank;
     data['pumpingAvgRank'] = this.pumpingAvgRank;

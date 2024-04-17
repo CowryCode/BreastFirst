@@ -113,6 +113,7 @@ class ApiAccess {
             "ispumping" : isPumping,
             "isbreasting" : (isPumping == false && isBottling == false),
             "userID" : token,
+            "userName" : motherDataNotifier.value.name,
           }),
     );
     if (response.statusCode == 200) {

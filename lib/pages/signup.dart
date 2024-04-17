@@ -13,7 +13,7 @@ class RegistrationScreen extends StatefulWidget {
 class _RegistrationScreenState extends State<RegistrationScreen> {
   TextEditingController _nameController = TextEditingController();
   TextEditingController _emailController = TextEditingController();
-  TextEditingController _passwordController = TextEditingController();
+  TextEditingController _passwordController1 = TextEditingController();
   String? _selectedStatus;
   bool _isAgreedToTnC = false;
 
@@ -57,16 +57,16 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                   fillColor: Colors.purple[50],
                 ),
               ),
-              SizedBox(height: 16),
-              TextField(
-                controller: _passwordController,
-                obscureText: true,
-                decoration: InputDecoration(
-                  hintText: "Password*",
-                  filled: true,
-                  fillColor: Colors.purple[50],
-                ),
-              ),
+              // SizedBox(height: 16),
+              // TextField(
+              //   controller: _passwordController,
+              //   obscureText: true,
+              //   decoration: InputDecoration(
+              //     hintText: "Password*",
+              //     filled: true,
+              //     fillColor: Colors.purple[50],
+              //   ),
+              // ),
               SizedBox(height: 20),
               Text("Select status:"),
               Row(
@@ -186,7 +186,6 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
   Future<bool> _submitAction() async {
     if (_nameController.text.isEmpty ||
         _emailController.text.isEmpty ||
-        _passwordController.text.isEmpty ||
         _isAgreedToTnC == false ||
         _selectedStatus == null) {
       return false;
@@ -195,7 +194,7 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
       UserCredential? cred = await FireStoreAuthentication()
           .createMotherAccount(
               email: _emailController.text.toString(),
-              password: _passwordController.text.toString(),
+              // password: _passwordController.text.toString(),
               name: _nameController.text.toString(),
               pregnancyStatus: _ispregant);
 

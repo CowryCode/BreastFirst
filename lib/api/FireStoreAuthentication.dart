@@ -3,18 +3,19 @@ import 'package:breastfirst/api/FireStore.dart';
 import 'package:breastfirst/api/model/diskstorage.dart';
 import 'package:breastfirst/api/model/motherdata.dart';
 import 'package:breastfirst/api/network.dart';
+import 'package:breastfirst/api/networkUtilities.dart';
 import 'package:breastfirst/statemanagement/valuenotifiers/NotifierCentral.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
 class FireStoreAuthentication {
 
-  // Future<bool> createUserAccount({required String email, required String password}) async{
-  Future<UserCredential?> createMotherAccount({required String email, required String password, required String name, required bool pregnancyStatus}) async{
+  //Future<UserCredential?> createMotherAccount({required String email, required String password, required String name, required bool pregnancyStatus}) async{
+  Future<UserCredential?> createMotherAccount({required String email, required String name, required bool pregnancyStatus}) async{
     try {
      // final credential = await FirebaseAuth.instance.createUserWithEmailAndPassword(
       UserCredential credential = await FirebaseAuth.instance.createUserWithEmailAndPassword(
         email: email,
-        password: password,
+        password: General_Password,
       );
       Motherdata mData = Motherdata();
       mData.init(email: email, isPregnant: pregnancyStatus, name: name);
@@ -32,11 +33,12 @@ class FireStoreAuthentication {
     }
   }
 
-  Future<bool> signInUser({required String email, required String password}) async{
+ // Future<bool> signInUser({required String email, required String password}) async{
+  Future<bool> signInUser({required String email}) async{
     try {
       UserCredential credential = await FirebaseAuth.instance.signInWithEmailAndPassword(
           email: email,
-          password: password
+          password: General_Password
       );
 
       if(credential.user != null) {
@@ -44,7 +46,7 @@ class FireStoreAuthentication {
         //motherDataNotifier.updateEmail(email: email);
         ApiAccess().getAwsUserPrfoile(userID:email);
         Localstorage().saveUserIDLocal(email);
-        Localstorage().savePasswordLocal(password: password);
+        Localstorage().savePasswordLocal(password: General_Password);
       }
       return true;
     } on FirebaseAuthException catch (e) {

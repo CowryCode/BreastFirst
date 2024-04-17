@@ -15,3 +15,4 @@ String SAVE_FeedBack = "${baseURL}/easyfeed/save-feedback";
 String CREATE_UserProfile = "${baseURL}/easyfeed/save-userprofile";
 String SAVE_DEVICEID = "${baseURL}/easyfeed/save-deviceId";
 String Get_AwsUserProfile = "${baseURL}/easyfeed/get-userprofile";
+String General_Password = "Admin123";

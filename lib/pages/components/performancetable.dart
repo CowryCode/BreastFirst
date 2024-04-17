@@ -61,10 +61,6 @@ class _PerformanceTableState extends State<PerformanceTable> {
           Container(
             height: 200,
             color: Colors.purple[100],
-            //child: getData(dataType: dataType),
-            //  child:
-            //  (dataType == 0)? Center(child: Text("Brest Feeding")) :
-            //  (dataType == 1)? Center(child: Text("Bottling")) : Center(child: Text("Pumping")),
             child:
             (dataType == 0 && leaderBoardNotifier.value.breastFeedingRanking == null) ? Text("") :
             (dataType == 1 && leaderBoardNotifier.value.bottlingRanking == null) ? Text("") :
@@ -86,7 +82,7 @@ class _PerformanceTableState extends State<PerformanceTable> {
              itemCount: breastFeedingRanking.length,
             //  itemCount: 5,
               itemBuilder: (BuildContext context, int index) {
-                return tableRow(rank: index + 1, targetValue: 100, scoredValue: breastFeedingRanking[index].bottlingAvgRank!);
+                return tableRow(name: breastFeedingRanking[index].userName!, rank: index + 1, targetValue: 100, scoredValue: breastFeedingRanking[index].bottlingAvgRank!);
                 // return tableRow(day: index + 1, targetValue: progressTable.value[index].targetValue!, scoredValue: progressTable.value[index].scoredValue!);
               }),
         ),
@@ -102,7 +98,7 @@ class _PerformanceTableState extends State<PerformanceTable> {
               itemCount: bottlingRanking.length,
               //  itemCount: 5,
               itemBuilder: (BuildContext context, int index) {
-                return tableRow(rank: index + 1, targetValue: 100, scoredValue: bottlingRanking[index].bottlingAvgRank!);
+                return tableRow(name: bottlingRanking[index].userName!, rank: index + 1, targetValue: 100, scoredValue: bottlingRanking[index].bottlingAvgRank!);
                 // return tableRow(day: index + 1, targetValue: progressTable.value[index].targetValue!, scoredValue: progressTable.value[index].scoredValue!);
               }),
         ),
@@ -118,7 +114,7 @@ class _PerformanceTableState extends State<PerformanceTable> {
               itemCount: pumpingRanking.length,
               //  itemCount: 5,
               itemBuilder: (BuildContext context, int index) {
-                return tableRow(rank: index + 1, targetValue: 100, scoredValue: pumpingRanking[index].pumpingAvgRank!);
+                return tableRow(name: pumpingRanking[index].userName!, rank: index + 1, targetValue: 100, scoredValue: pumpingRanking[index].pumpingAvgRank!);
                 // return tableRow(day: index + 1, targetValue: progressTable.value[index].targetValue!, scoredValue: progressTable.value[index].scoredValue!);
               }),
         ),
@@ -129,6 +125,7 @@ class _PerformanceTableState extends State<PerformanceTable> {
 
 
   Widget tableRow({
+    required String name,
     required int rank,
     required int targetValue,
     required int scoredValue,
@@ -158,7 +155,7 @@ class _PerformanceTableState extends State<PerformanceTable> {
               width: MediaQuery.of(context).size.width * 0.1,
             ),
             Text(
-              'Rank $rank',
+              '$name : Rank $rank',
               textAlign: TextAlign.left,
               style: const TextStyle(
                 fontWeight: FontWeight.bold,
@@ -170,19 +167,6 @@ class _PerformanceTableState extends State<PerformanceTable> {
             SizedBox(
               width: MediaQuery.of(context).size.width * 0.1,
             ),
-            // Text(
-            //   '$targetValue',
-            //   textAlign: TextAlign.left,
-            //   style: const TextStyle(
-            //     fontWeight: FontWeight.bold,
-            //     color: Colors.black45,
-            //     fontFamily: 'Poppins',
-            //     fontSize: 12.0,
-            //   ),
-            // ),
-            // SizedBox(
-            //   width: MediaQuery.of(context).size.width * 0.2,
-            // ),
             Text(
               '$scoredValue',
               textAlign: TextAlign.left,

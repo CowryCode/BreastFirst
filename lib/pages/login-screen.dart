@@ -13,7 +13,7 @@ class SignInPage extends StatefulWidget {
 
 class _SignInPageState extends State<SignInPage> {
   TextEditingController _emailController = TextEditingController();
-  TextEditingController _passwordController = TextEditingController();
+  TextEditingController _passwordController1 = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -61,16 +61,16 @@ class _SignInPageState extends State<SignInPage> {
                 ),
               ),
             ),
-            SizedBox(height: 10),
-            Card(
-              child: TextField(
-                controller: _passwordController,
-                obscureText: true,
-                decoration: InputDecoration(
-                  hintText: 'Password*',
-                ),
-              ),
-            ),
+            // SizedBox(height: 10),
+            // Card(
+            //   child: TextField(
+            //     controller: _passwordController,
+            //     obscureText: true,
+            //     decoration: InputDecoration(
+            //       hintText: 'Password*',
+            //     ),
+            //   ),
+            // ),
             SizedBox(height: 20),
             ElevatedButton(
               onPressed: () {
@@ -128,16 +128,17 @@ class _SignInPageState extends State<SignInPage> {
   }
 
   Future<bool> _loginAction() async{
-    if(_emailController.text.isEmpty || _passwordController.text.isEmpty){
+    //if(_emailController.text.isEmpty || _passwordController.text.isEmpty){
+    if(_emailController.text.isEmpty){
       return false;
     }else{
       print(_emailController.text.toString());
-      print(_passwordController.text.toString());
+
       // bool _ispregant = (_selectedStatus == '0') ? true : false;
 
     return FireStoreAuthentication().signInUser(
           email: _emailController.text.toString().trim(),
-          password: _passwordController.text.toString().trim(),
+         // password: _passwordController.text.toString().trim(),
       );
     }
   }
