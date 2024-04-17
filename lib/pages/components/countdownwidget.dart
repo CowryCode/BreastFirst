@@ -148,21 +148,17 @@ class _CountDownWidgetState extends State<CountDownWidget> {
         if(isCounting == true)
         ElevatedButton(
           onPressed: () {
-            print('GOT here 1');
             if(widget.pumping == true ) {
               _showDigitInputDialog(context, breastFeedingDuration: elapsedDuration.inSeconds);
             }else if(widget.bottle == true){
-              print('GOT here 2');
               saveBreastMilkData(duration: elapsedDuration.inSeconds, isPumping: false, isBottling: true);
             } else {
               // Handle done action
               if(leftBreastActive == true){
                 // Save this data for left Breast
-                print('LEFT BREAST DURATION : ${elapsedDuration.inSeconds}');
                 saveBreastMilkData(duration: elapsedDuration.inSeconds, isLeft: true, isPumping: false);
               }else{
                 // Save this data for right Breast
-                print('Right BREAST DURATION : ${elapsedDuration.inSeconds}');
                 saveBreastMilkData(duration: elapsedDuration.inSeconds, isLeft: false, isPumping: false);
               }
             }

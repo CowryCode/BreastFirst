@@ -1,5 +1,6 @@
 import 'package:assets_audio_player/assets_audio_player.dart';
 import 'package:audioplayers/audioplayers.dart';
+import 'package:breastfirst/api/FireStore.dart';
 import 'package:breastfirst/pages/musicplayers/musiclibrary.dart';
 import 'package:flutter/material.dart';
 
@@ -141,7 +142,7 @@ class _MusicSelectorState extends State<MusicSelector> {
         activeMusicIndex = musicIndex;
         isMusicPlaying = true;
       });
-
+      FireStoreConnect().saveSelectedMusic(music: musicIndex);
     }
   }
 

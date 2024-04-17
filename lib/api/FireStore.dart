@@ -18,6 +18,7 @@ class FireStoreConnect{
   CollectionReference breastFeedingCollection = FirebaseFirestore.instance.collection('BreastFeedingData');
   CollectionReference journalCollection = FirebaseFirestore.instance.collection('JournalCollection');
   CollectionReference shareCollection = FirebaseFirestore.instance.collection('ShareCollection');
+  CollectionReference selectedMusicCollection = FirebaseFirestore.instance.collection('SelectedMusicCollection');
 
   String JournalID = "Journal";
   String pumpingCollection = 'Pumping';
@@ -137,6 +138,18 @@ class FireStoreConnect{
     };
 
     journalCollection.doc(userID).collection(JournalID).add(data);
+  }
+
+  Future<void>? saveSelectedMusic({required int music}) async{
+    print('Got called . . .');
+    String? userID = motherDataNotifier.value.email;
+    Map<String, dynamic> data = {
+      "musicSelected": music,
+      "userID": userID,
+      'timestamp': DateTime.now()
+    };
+
+    selectedMusicCollection.doc(userID).collection("Music").add(data);
   }
 
   Future<void>? shareProgress({required String user, required String name}) async{

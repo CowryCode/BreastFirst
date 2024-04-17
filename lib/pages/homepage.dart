@@ -52,7 +52,7 @@ class _MyHomePageState extends State<MyHomePage> {
     setState(() {
       _selectedIndex = index;
     });
-    print('THE SCREAM : $_selectedIndex');
+
   }
 
 

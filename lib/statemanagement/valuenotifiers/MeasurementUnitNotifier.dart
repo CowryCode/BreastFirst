@@ -6,7 +6,6 @@ class MeasurementUnitNotifier extends ValueNotifier<MeasurementUnit> {
 
   void upDateHeight({required String heightunit}) {
     value.setHeighUnit(heightUnit: heightunit);
-    print('GOT HERE 1');
     notifyListeners();
   }
 
