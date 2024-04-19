@@ -16,6 +16,7 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
   TextEditingController _passwordController1 = TextEditingController();
   String? _selectedStatus;
   bool _isAgreedToTnC = false;
+  bool _isLoading = false;
 
   @override
   Widget build(BuildContext context) {
@@ -119,49 +120,73 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                 ],
               ),
               SizedBox(height: 16),
+              // ElevatedButton(
+              //   onPressed: () {
+              //     // Handle registration logic here
+              //     String sel = (_selectedStatus == '0')
+              //         ? "Pregnant Selected"
+              //         : "Breastfeading selected";
+              //
+              //     _submitAction().then((value) => {
+              //           if (value == true)
+              //             {
+              //               if (_selectedStatus == '0')
+              //                 {
+              //                   Navigator.push(
+              //                     context,
+              //                     MaterialPageRoute(
+              //                         builder: (context) => WelcomePage()),
+              //                   )
+              //                 }
+              //               else
+              //                 {
+              //                   Navigator.push(
+              //                     context,
+              //                     MaterialPageRoute(
+              //                         builder: (context) =>
+              //                             AddBabyDetailsPage()),
+              //                   )
+              //                 }
+              //             }
+              //           else
+              //             {_showSnackBar(context)}
+              //         });
+              //
+              //   },
+              //   child: Text("CREATE ACCOUNT"),
+              // ),
+
               ElevatedButton(
                 onPressed: () {
-                  // Handle registration logic here
-                  String sel = (_selectedStatus == '0')
-                      ? "Pregnant Selected"
-                      : "Breastfeading selected";
-                  CircularProgressIndicator();
-                  _submitAction().then((value) => {
-                        if (value == true)
-                          {
-                            if (_selectedStatus == '0')
-                              {
-                                Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                      builder: (context) => WelcomePage()),
-                                )
-                              }
-                            else
-                              {
-                                Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                      builder: (context) =>
-                                          AddBabyDetailsPage()),
-                                )
-                              }
-                          }
-                        else
-                          {_showSnackBar(context)}
-                      });
+                  setState(() {
+                    _isLoading = true;
+                  });
 
-                  // if(_submitAction() == true){
-                  //   if(_selectedStatus == '0'){
-                  //     Navigator.push(context, MaterialPageRoute(builder: (context) => WelcomePage()),);
-                  //   }else{
-                  //     Navigator.push(context, MaterialPageRoute(builder: (context) => AddBabyDetailsPage()),);
-                  //   }
-                  // }else {
-                  //   _showSnackBar(context);
-                  // }
+                  String sel = (_selectedStatus == '0') ? "Pregnant Selected" : "Breastfeeding selected";
+
+                  _submitAction().then((value) {
+                    setState(() {
+                      _isLoading = false;
+                    });
+
+                    if (value == true) {
+                      if (_selectedStatus == '0') {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(builder: (context) => WelcomePage()),
+                        );
+                      } else {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(builder: (context) => AddBabyDetailsPage()),
+                        );
+                      }
+                    } else {
+                      _showSnackBar(context);
+                    }
+                  });
                 },
-                child: Text("CREATE ACCOUNT"),
+                child: _isLoading ? CircularProgressIndicator() : Text("CREATE ACCOUNT"),
               ),
               SizedBox(height: 16),
               Center(

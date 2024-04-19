@@ -77,15 +77,19 @@ class ApiAccess {
     );
 
     if (response.statusCode == 200) {
-      print('${response.body}');
-      AWSuserProfile profile = AWSuserProfile.fromJson(jsonDecode(response.body));
-      Motherdata mData = Motherdata();
-      mData.init(email: profile.userID!, isPregnant: true, name: profile.babyName!);
-      motherDataNotifier.updateMotherDataNotifier(motherdata: mData);
-      getLeaderBoard();
-      return profile;
+
+        AWSuserProfile profile = AWSuserProfile.fromJson(jsonDecode(response.body));
+
+        Motherdata mData = Motherdata();
+        mData.init(email: profile.userID!, isPregnant: true, name: profile.babyName!);
+        mData.setLastFeedingData(lastfeed: profile.lastFeeding!);
+        motherDataNotifier.updateMotherDataNotifier(motherdata: mData);
+
+        getLeaderBoard();
+        return profile;
+
     } else {
-      throw Exception("Couldn't pull the leaderboard");
+      throw Exception("Couldn't pull the user profile");
     }
   }
 
@@ -117,7 +121,7 @@ class ApiAccess {
           }),
     );
     if (response.statusCode == 200) {
-      print('Saved successfully . . . ');
+      getAwsUserPrfoile(userID : token);
     } else {
       //
     }

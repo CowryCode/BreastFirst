@@ -63,7 +63,8 @@ class _MyHomePageState extends State<MyHomePage> {
     final firebaseMessaging = FCM();
     firebaseMessaging.setNotifications();
     WidgetsBinding.instance.addPostFrameCallback((_) async {
-      AWSuserProfile profile = await ApiAccess().getAwsUserPrfoile();
+      //AWSuserProfile profile = await ApiAccess().getAwsUserPrfoile();
+      Motherdata profile = motherDataNotifier.value;
       if(profile == null){
         Navigator.push(context, MaterialPageRoute(builder: (context) => SignInPage()),);
       }else{
@@ -89,9 +90,9 @@ class _MyHomePageState extends State<MyHomePage> {
         ValueListenableBuilder(
           valueListenable: motherDataNotifier,
           builder: (context, Motherdata motherdata, child){
+            return (motherdata.name != null) ? Text('${motherdata.name}') : Text('');
             return Container(
               child: StreamBuilder<QuerySnapshot>(
-               // stream: FirebaseFirestore.instance.collection('MotherCollection').where("email", isEqualTo: USERid)
                 stream: FirebaseFirestore.instance.collection('MotherCollection').where("email", isEqualTo: motherdata.email)
                     .snapshots(),
                 builder: (BuildContext context,

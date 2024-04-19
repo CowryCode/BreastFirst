@@ -15,6 +15,8 @@ class _SignInPageState extends State<SignInPage> {
   TextEditingController _emailController = TextEditingController();
   TextEditingController _passwordController1 = TextEditingController();
 
+  bool _isLoading = false;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -61,36 +63,43 @@ class _SignInPageState extends State<SignInPage> {
                 ),
               ),
             ),
-            // SizedBox(height: 10),
-            // Card(
-            //   child: TextField(
-            //     controller: _passwordController,
-            //     obscureText: true,
-            //     decoration: InputDecoration(
-            //       hintText: 'Password*',
-            //     ),
-            //   ),
-            // ),
+
             SizedBox(height: 20),
             ElevatedButton(
               onPressed: () {
-                _loginAction().then((value) => {
-                  if(value == true){
-                  Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => MyHomePage()),)
-                  }else{
-                    _showSnackBar(context)
+                setState(() {
+                  _isLoading = true;
+                });
+                _loginAction().then((value) {
+                  setState(() {
+                    _isLoading = false;
+                  });
+                  if (value == true) {
+                    Navigator.pushReplacement(
+                      context,
+                      MaterialPageRoute(builder: (context) => MyHomePage()),
+                    );
+                  } else {
+                    _showSnackBar(context);
                   }
                 });
-
-                // if(_loginAction() == false){
-                //   _showSnackBar(context);
-                // }else{
-                //
-                // }
               },
-              child: Text('Log in'),
+              child: _isLoading ? CircularProgressIndicator() : Text('Log in'),
               style: ElevatedButton.styleFrom(primary: Colors.purple),
             ),
+            // ElevatedButton(
+            //   onPressed: () {
+            //     _loginAction().then((value) => {
+            //       if(value == true){
+            //       Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => MyHomePage()),)
+            //       }else{
+            //         _showSnackBar(context)
+            //       }
+            //     });
+            //   },
+            //   child: Text('Log in'),
+            //   style: ElevatedButton.styleFrom(primary: Colors.purple),
+            // ),
             SizedBox(height: 10),
             Row(
               mainAxisAlignment: MainAxisAlignment.center,

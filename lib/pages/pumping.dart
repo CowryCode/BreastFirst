@@ -1,5 +1,7 @@
+import 'package:breastfirst/api/model/motherdata.dart';
 import 'package:breastfirst/pages/components/countdownwidget.dart';
 import 'package:breastfirst/pages/pumpingreport.dart';
+import 'package:breastfirst/statemanagement/valuenotifiers/NotifierCentral.dart';
 import 'package:flutter/material.dart';
 
 class PumpingScreen extends StatefulWidget {
@@ -33,45 +35,60 @@ class _PumpingScreenState extends State<PumpingScreen> {
       body: SingleChildScrollView(
         child: Padding(
           padding: const EdgeInsets.all(20.0),
-          child: Column(
-            children: [
-              Center(
-                  child: CountDownWidget(breastFeeding: false, bottle: widget.bottle, pumping: widget.pumping,)
-              ),
-              Text('Last pumping\n45 mins ago', textAlign: TextAlign.center, style: TextStyle(fontSize: 16)),
-              SizedBox(height: 10),
-              Table(
+          child:
+
+          ValueListenableBuilder(
+            valueListenable: motherDataNotifier,
+            builder: (context, Motherdata motherdata, child){
+              return Column(
                 children: [
-                  TableRow(
-                    children: [
-                      TableCell(
-                        child: Text('Start time', textAlign: TextAlign.center),
-                      ),
-                      TableCell(
-                        child: Text('Amount', textAlign: TextAlign.center),
-                      ),
-                      TableCell(
-                        child: Text('Duration', textAlign: TextAlign.center),
-                      ),
-                    ],
+                  Center(
+                      child: CountDownWidget(breastFeeding: false, bottle: widget.bottle, pumping: widget.pumping,)
                   ),
-                  TableRow(
-                    children: [
-                      TableCell(
-                        child: Text('4:45pm', textAlign: TextAlign.center),
-                      ),
-                      TableCell(
-                        child: Text('4.05oz', textAlign: TextAlign.center),
-                      ),
-                      TableCell(
-                        child: Text('1min', textAlign: TextAlign.center),
-                      ),
-                    ],
-                  ),
+                  (widget.pumping == true && motherdata.lastfeeding != null && motherdata.lastfeeding!.pumping != null)? Text('Last pumping duration ${motherdata.lastfeeding!.pumping!.breastfeedingduration}(sec)', textAlign: TextAlign.center, style: TextStyle(fontSize: 16))
+                      :
+                  (widget.bottle  == true && motherdata.lastfeeding != null && motherdata.lastfeeding!.bottling != null)? Text('Last pumping duration ${motherdata.lastfeeding!.bottling!.breastfeedingduration}(sec)', textAlign: TextAlign.center, style: TextStyle(fontSize: 16))
+                  :
+                  Text(""),
+                  // SizedBox(height: 10),
+                  // Table(
+                  //   children: [
+                  //     TableRow(
+                  //       children: [
+                  //         TableCell(
+                  //           child: Text('Start time \n ${motherdata.lastfeeding!.pumping!.breastfeedingduration}', textAlign: TextAlign.center),
+                  //         ),
+                  //         TableCell(
+                  //           child: Text('Amount \n ${motherdata.lastfeeding!.pumping!.pumpedQuantityML}', textAlign: TextAlign.center),
+                  //         ),
+                  //         TableCell(
+                  //           child: Text('Duration \n ', textAlign: TextAlign.center),
+                  //         ),
+                  //       ],
+                  //     ),
+                  //     // TableRow(
+                  //     //   children: [
+                  //     //     TableCell(
+                  //     //       child: Text('4:45pm', textAlign: TextAlign.center),
+                  //     //     ),
+                  //     //     TableCell(
+                  //     //       child: Text('4.05oz', textAlign: TextAlign.center),
+                  //     //     ),
+                  //     //     TableCell(
+                  //     //       child: Text('1min', textAlign: TextAlign.center),
+                  //     //     ),
+                  //     //   ],
+                  //     // ),
+                  //   ],
+                  // ),
                 ],
-              ),
-            ],
+              );
+
+            },
+
           ),
+
+
         ),
       ),
       bottomNavigationBar: BottomNavigationBar(
